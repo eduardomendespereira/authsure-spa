@@ -1,5 +1,8 @@
 <template>
-  <router-view />
+  <v-app theme="dark">
+    <router-view />
+  </v-app>
+  
 </template>
 
 <script setup>

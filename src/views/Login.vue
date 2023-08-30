@@ -2,15 +2,18 @@
 <v-container class="fill-height
 d-flex justify-center align-baseline">
   <v-row align-content="center" class="main mt-10" >
-    <v-col cols="12" class="d-flex justify-center">
-      <h1 class="text-h2">AuthSure Demo</h1>
+    <v-col cols="12" class="d-flex justify-center"
+    >
+      <h1 class="text-lg-h2 text-h3">AuthSure Demo</h1>
     </v-col>
     <v-col cols="12" class="aling-center mt-14">
       <v-card color="white" elevation="5" rounded>
         <v-card-text>
           <v-row>
             <v-col cols="12" class="d-flex justify-center">
-              <h1 class="text-black text-h4">Log in</h1>
+              <h1 class="text-black text-h4">
+                Log in
+              </h1>
             </v-col>
             <v-col cols="12">
               <v-form
@@ -23,6 +26,8 @@ d-flex justify-center align-baseline">
                       label="Email"
                       placeholder="example@hotmail.com"
                       type="email"
+                      v-model="user.email.value"
+                      :rules="userRules.email"
                       variant="underlined"
                       required
                     ></v-text-field>
@@ -33,17 +38,24 @@ d-flex justify-center align-baseline">
                       placeholder="Password"
                       type="password"
                       variant="underlined"
+                      :rules="userRules.password"
+                      v-model="user.password.value"
                       required
                     ></v-text-field>
                   </v-col>
                   <v-col cols="6">
-                    <v-checkbox label="Remember me"></v-checkbox>
+                    <v-checkbox 
+                    label="Remember me">
+                    </v-checkbox>
                   </v-col>
-                  <v-col cols="6" class="d-flex align-center justify-end mt-n5 ml-n2">
-                     <a href="#">Forgot Password</a>
+                  <v-col cols="6" 
+                  class="d-flex align-center 
+                  justify-end mt-n6 ml-n2">
+                    <p class="text-caption"><a href="#">Forgot Password ?</a></p>
                   </v-col>
                   <v-col cols="12">
                     <v-btn
+                      @click="login"
                       block
                       color="blue"
                     >
@@ -62,19 +74,22 @@ d-flex justify-center align-baseline">
 </template>
 
 <script setup>
-  import {ref} from 'vue'
+  
+  import userComp from '../compositionAPI/userComp'
 
-  const test = ref(0)
+  const {
+      user, 
+      login,
+      userRules
+  } = userComp()
 
-  function changeValue(){
-    test.value += 1
-  }
+
 </script>
 <style scoped>
   .main{
     display: flex !important;
     justify-content: center !important;
-    max-width: 80vh !important;
+    max-width: 83vh !important;
   }
   .bg {
     background-color: rgb(141, 139, 139) !important;

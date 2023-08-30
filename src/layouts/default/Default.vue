@@ -1,6 +1,5 @@
 <template>
   <v-app theme="dark">
-
     <default-view />
   </v-app>
 </template>
@@ -9,3 +8,4 @@
   // import DefaultBar from './AppBar.vue'
   import DefaultView from './View.vue'
 </script>
+
