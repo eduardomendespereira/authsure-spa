@@ -23,11 +23,11 @@ d-flex justify-center align-baseline">
                 <v-row>
                   <v-col cols="12" class="mt-3">
                     <v-text-field
-                      label="Email"
-                      placeholder="example@hotmail.com"
-                      type="email"
-                      v-model="user.email.value"
-                      :rules="userRules.email"
+                      label="Username"
+                      placeholder="user"
+                      type="text"
+                      v-model="loginPayload.username"
+                      :rules="userRules.username"
                       variant="underlined"
                       required
                     ></v-text-field>
@@ -39,23 +39,13 @@ d-flex justify-center align-baseline">
                       type="password"
                       variant="underlined"
                       :rules="userRules.password"
-                      v-model="user.password.value"
+                      v-model="loginPayload.password"
                       required
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="6">
-                    <v-checkbox 
-                    label="Remember me">
-                    </v-checkbox>
-                  </v-col>
-                  <v-col cols="6" 
-                  class="d-flex align-center 
-                  justify-end mt-n6 ml-n2">
-                    <p class="text-caption"><a href="#">Forgot Password ?</a></p>
-                  </v-col>
                   <v-col cols="12">
                     <v-btn
-                      @click="login"
+                      @click="login(loginPayload)"
                       block
                       color="blue"
                     >
@@ -75,10 +65,15 @@ d-flex justify-center align-baseline">
 
 <script setup>
   
+  import { ref } from 'vue';
   import userComp from '../compositionAPI/userComp'
 
-  const {
-      user, 
+  const loginPayload = ref({
+      username: '' ,
+      password: ''
+  })
+
+  const { 
       login,
       userRules
   } = userComp()

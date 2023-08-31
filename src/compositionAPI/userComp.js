@@ -5,27 +5,21 @@ export default function userComp(){
 
     const router = useRouter()
 
-    const user = {
-        username : ref(''),
-        email : ref(''),
-        password : ref(''),
-        realm_id : ref(''),
-    }
 
     const userRules = {
         password: [
             v => !!v || 'Password is mandatory',
             v => (v && v.length >= 6) || 'Password must have at least 6 characters'
         ], 
-        email:[
-            v => !!v || 'Email is mandatory',
-            v => /.+@.+\..+/.test(v) || 'Email must be valid'
+        username:[
+            v => !!v || 'Username is mandatory',
         ]
     
     } 
 
-    function login(){
-        console.log(user.value)
+    function login(payload){
+        console.log(payload)
+        localStorage.setItem("user", payload.username)
         router.push({path : '/'})
         clearUser()
     }
@@ -42,7 +36,6 @@ export default function userComp(){
     
 
     return {
-        user,
         userRules,
         login
     }
