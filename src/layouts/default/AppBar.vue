@@ -35,6 +35,8 @@
         v-for="(item, i) in items"
         :key="i"
         :value="item"
+        :to="item.link"
+        color="teal-lighten-3"
         class="mt-4"
       >
         <template v-slot:prepend>
@@ -60,27 +62,33 @@
   const items = ref([
     {
        text: "Clients",
-       icon: "mdi-application-brackets-outline"
+       icon: "mdi-application-brackets-outline",
+       link: "/clients"
     },
     {
        text: "Realm roles",
-       icon: "mdi-account-hard-hat"
+       icon: "mdi-account-hard-hat",
+       link: "/realms"
     },
     {
        text: "Users",
-       icon: "mdi-account-cog"
+       icon: "mdi-account-cog",
+       link: "/users"
     },
     {
        text: "Groups",
-       icon: "mdi-account-group"
+       icon: "mdi-account-group",
+       link: "/groups"
     },
     {
        text: "Sessions",
-       icon: "mdi-sitemap-outline"
+       icon: "mdi-sitemap-outline",
+       link: "/sessions"
     },
     {
        text: "Events",
-       icon: "mdi-post-outline"
+       icon: "mdi-post-outline",
+       link: "/events"
     },
   ])
 </script>
