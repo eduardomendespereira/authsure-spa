@@ -9,7 +9,7 @@ import App from './App.vue'
 
 // Composables
 import { createApp } from 'vue'
-
+import pinia from './store'
 // Plugins
 import { registerPlugins } from '@/plugins'
 
