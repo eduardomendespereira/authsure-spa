@@ -44,10 +44,7 @@ export default class Service {
       handlingError(error) {
         try {
           if (!error.data) {
-            if (error.lastIndexOf('Network') !== -1) return Promise.reject(error)
-            else {
-              return Promise.reject(error)
-            }
+            return Promise.reject(error)
           }
     
           const { statusText, data } = error

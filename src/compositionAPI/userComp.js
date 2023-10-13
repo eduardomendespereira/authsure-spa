@@ -3,7 +3,7 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { authUserStore } from "@/store/authStore/authStore";
 export default function userComp() {
-  const router = useRouter();
+  const userouter = useRouter();
   const authApp = authUserStore();
   const userRules = {
     password: [
@@ -15,17 +15,11 @@ export default function userComp() {
 
   async function login(payload) {
     try {
-      await authApp.login(payload);
+      const auth = await authApp.login(payload);
+      if (auth) userouter.push({ name: "Home" });
     } catch (error) {
       console.log(error);
     }
-  }
-
-  function clearUser() {
-    user.email.value = "";
-    user.username.value = "";
-    user.password.value = "";
-    user.realm_id.value = "";
   }
 
   return {
