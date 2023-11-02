@@ -1,5 +1,6 @@
 import axios from "axios";
 import store from "@/store/index";
+import getAuth from "@/utils/auth";
 
 function verifyURL() {
   const hostname = window.location.hostname;
@@ -24,6 +25,7 @@ const http = axios.create({
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
+    "Authorization": "Bearer " + getAuth().access
   },
 });
 

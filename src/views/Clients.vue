@@ -38,17 +38,16 @@
                 <thead>
                   <tr>
                     <th class="text-left">
-                      ClientId
+                        ClientId
                     </th>
                     <th class="text-left">
-                      Enabled
+                        Enabled
                     </th>
                     <th>
                         Base URL
                     </th>
                   </tr>
                 </thead>
-               
             </v-table>
         </v-col> 
     </v-row>

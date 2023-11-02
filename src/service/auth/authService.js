@@ -4,7 +4,7 @@ class AuthService extends Service {
   constructor() {
     super();
 
-    this.resource = "/login";
+    this.resource = "auth/login";
   }
 
   async login(payload) {
