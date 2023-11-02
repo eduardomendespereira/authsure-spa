@@ -66,9 +66,14 @@
        link: "/clients"
     },
     {
-       text: "Realm roles",
+       text: "Realm",
        icon: "mdi-account-hard-hat",
        link: "/realms"
+    },
+    {
+       text: "Roles",
+       icon: "mdi-account-hard-hat",
+       link: "/roles"
     },
     {
        text: "Users",
