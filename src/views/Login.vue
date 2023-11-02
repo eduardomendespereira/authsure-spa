@@ -53,6 +53,7 @@
 <script setup>
 import { ref } from "vue";
 import userComp from "../compositionAPI/userComp";
+import { useRouter } from "vue-router";
 
 const loginPayload = ref({
   username: "",
@@ -72,6 +73,14 @@ async function goLogin() {
     throw er
   }
 }
+
+(function authCheck() {
+  const auth = JSON.parse(localStorage.auth)
+  if (auth) {
+    const userouter = useRouter();
+    userouter.push({name: "Home"})
+  }
+}());
 </script>
 <style scoped>
 .main {
