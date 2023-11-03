@@ -1,6 +1,7 @@
 <template>
   <ViewBase
     title="Grupos"
+    createTitle="Novo Grupo"
     :objects="groups"
     :labels="['Id', 'Nome']"
     :keys="['id', 'name']"

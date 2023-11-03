@@ -1,6 +1,7 @@
 <template>
   <ViewBase
     title="Cargos"
+    createTitle="Novo Cargo"
     :objects="roles"
     :labels="['Id', 'Nome']"
     :keys="['id', 'name']"

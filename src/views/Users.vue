@@ -1,6 +1,7 @@
 <template>
   <ViewBase
     title="Usuários"
+    createTitle="Novo Usuário"
     :objects="users"
     :labels="['Id', 'Nome de usuário', 'Email']"
     :keys="['id', 'username', 'email']"

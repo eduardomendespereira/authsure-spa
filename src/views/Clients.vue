@@ -1,6 +1,7 @@
 <template>
     <ViewBase
         title="Clientes"
+        createTitle="Novo Cliente"
         :objects="clients"
         :labels="['Id', 'Nome',  'Chave', 'Segredo']"
         :keys="['id', 'name', 'key', 'secret']"

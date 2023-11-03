@@ -10,7 +10,7 @@
     </v-row>
     <v-row>
       <v-col cols="12" md="5" xl="5" class="d-flex flex-row">
-        <v-btn size="x-large" variant="text" color="success">Novo {{ title }}</v-btn>
+        <v-btn size="x-large" variant="text" color="success">{{ createTitle }}</v-btn>
         <v-text-field class="ml-3" clearable clear-icon="mdi-close" variant="outlined" append-inner-icon="mdi-magnify"
           placeholder="Search" type="text">
         </v-text-field>
@@ -51,6 +51,10 @@
 <script setup>
 defineProps({
   title: {
+    type: String,
+    required: true,
+  },
+  createTitle: {
     type: String,
     required: true,
   },

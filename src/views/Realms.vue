@@ -1,6 +1,7 @@
 <template>
   <ViewBase
     title="Reinos"
+    createTitle="Novo Reino"
     :objects="realms"
     :labels="['Id', 'Nome']"
     :keys="['id', 'name']"

@@ -1,6 +1,7 @@
 <template>
     <ViewBase
-        title="sessions"
+        title="Sessões"
+        createTitle="Nova Sessão"
         :objects="sessions"
         :labels="['Id', 'Ativa']"
         :keys="['id', 'is_active']"
