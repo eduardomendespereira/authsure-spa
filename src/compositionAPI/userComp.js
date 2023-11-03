@@ -18,7 +18,6 @@ export default function userComp() {
       const auth = await authApp.login(payload);
       if (auth) userouter.push({ name: "Home" });
     } catch (error) {
-      console.log(error);
     }
   }
 

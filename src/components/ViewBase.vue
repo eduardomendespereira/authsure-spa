@@ -17,7 +17,7 @@
       </v-col>
 
       <v-col cols="12">
-        <v-table theme="dark" :key="index">
+        <v-table theme="dark">
           <thead>
             <tr>
               <th class="text-left" v-for="label in labels">{{ label }}</th>
@@ -36,39 +36,75 @@
                 </template>
               </td>
               <td class="text-center">
-                <v-btn color="primary" text class="mr-1"><v-icon>mdi-pencil</v-icon></v-btn>
-                <v-btn color="error" text class="mx-1"><v-icon>mdi-delete</v-icon></v-btn>
-                <v-btn color="info" text class="ml-1"><v-icon>mdi-information-outline</v-icon></v-btn>
+                <v-btn color="primary" text class="mr-1" @click="handleModal('edit')"><v-icon>mdi-pencil</v-icon></v-btn>
+                <v-btn color="error" text class="mx-1" @click="handleModal('delete')"><v-icon>mdi-delete</v-icon></v-btn>
+                <v-btn color="info" text class="ml-1" @click="handleModal('info')"><v-icon>mdi-information-outline</v-icon></v-btn>
               </td>
             </tr>
           </tbody>
         </v-table>
       </v-col>
     </v-row>
+    <ModalEdit :isOpen="isModalEditOpen" title="Editar" @closeModal="handleModal('edit')"/>
+    <ModalDelete :isOpen="isModalDeleteOpen" title="Deletar" @closeModal="handleModal('delete')"/>
+    <ModalInfo :isOpen="isModalInfoOpen" title="Informações" @closeModal="handleModal('info')"/>
   </v-container>
 </template>
 
-<script setup>
-defineProps({
-  title: {
-    type: String,
-    required: true,
+<script>
+import ModalEdit from "@/components/modal/ModalEdit.vue";
+import ModalDelete from "@/components/modal/ModalDelete.vue";
+import ModalInfo from "@/components/modal/ModalInfo.vue";
+
+export default {
+  components: {
+    ModalInfo,
+    ModalDelete,
+    ModalEdit,
   },
-  createTitle: {
-    type: String,
-    required: true,
+  props: {
+    title: {
+      type: String,
+      required: true,
+    },
+    createTitle: {
+      type: String,
+      required: true,
+    },
+    objects: {
+      type: Array,
+      required: true,
+    },
+    labels: {
+      type: Array,
+      required: true,
+    },
+    keys: {
+      type: Array,
+      required: true,
+    },
   },
-  objects: {
-    type: Array,
-    required: true,
+  data() {
+    return {
+      isModalEditOpen: false,
+      isModalDeleteOpen: false,
+      isModalInfoOpen: false,
+    }
   },
-  labels: {
-    type: Array,
-    required: true,
-  },
-  keys: {
-    type: Array,
-    required: true,
-  },
-})
+  methods: {
+    handleModal(type) {
+      switch (type) {
+        case "edit":
+          this.isModalEditOpen = !this.isModalEditOpen;
+          break;
+        case "delete":
+          this.isModalDeleteOpen = !this.isModalDeleteOpen;
+          break;
+        case "info":
+          this.isModalInfoOpen = !this.isModalInfoOpen;
+          break;
+      }
+    },
+  }
+}
 </script>

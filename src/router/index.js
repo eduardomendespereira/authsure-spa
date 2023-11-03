@@ -8,7 +8,6 @@ const routes = [
     beforeEnter(to, from, next){
       if(localStorage.getItem('auth')){
         const parse = JSON.parse(localStorage.getItem('auth'))
-        console.log(parse)
         next()
       }else{
         next({name: 'login'})
