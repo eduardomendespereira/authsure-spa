@@ -32,8 +32,8 @@ const modalDelete = {
 
 const modalInfo = {
   title: "Informações da Sessão",
-  labels: ["Id", "Ativa"],
-  keys: ["id", "is_active"],
+  labels: ["Id", "Ativa", "Usuário", "Token", "Criada em", "Atualizada em"],
+  keys: ["id", "is_active", "user_id", "token", "created_at", "updated_at"],
 };
 
 sessionService.sessions().then((data) => {

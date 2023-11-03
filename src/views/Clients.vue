@@ -32,8 +32,8 @@ const modalDelete = {
 
 const modalInfo = {
   title: "Informações do Cliente",
-  labels: ["Id", "Nome"],
-  keys: ["id", "name"],
+  labels: ["Id", "Nome", "Chave", "Segredo", "Reino", "Descrição", "Criado em", "Atualizado em"],
+  keys: ["id", "name", "key", "secret", "realm_id", "description", "created_at", "updated_at"],
 };
 
 

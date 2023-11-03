@@ -36,18 +36,18 @@
                 </template>
               </td>
               <td class="text-center">
-                <v-btn color="primary" text class="mr-1" @click="handleModal('edit')"><v-icon>mdi-pencil</v-icon></v-btn>
-                <v-btn color="error" text class="mx-1" @click="handleModal('delete')"><v-icon>mdi-delete</v-icon></v-btn>
-                <v-btn color="info" text class="ml-1" @click="handleModal('info')"><v-icon>mdi-information-outline</v-icon></v-btn>
+                <v-btn color="primary" text class="mr-1" @click="handleModal('edit', object)"><v-icon>mdi-pencil</v-icon></v-btn>
+                <v-btn color="error" text class="mx-1" @click="handleModal('delete', object)"><v-icon>mdi-delete</v-icon></v-btn>
+                <v-btn color="info" text class="ml-1" @click="handleModal('info', object)"><v-icon>mdi-information-outline</v-icon></v-btn>
               </td>
             </tr>
           </tbody>
         </v-table>
       </v-col>
     </v-row>
-    <ModalEdit :isOpen="isModalEditOpen" :info="ModalEdit" @closeModal="handleModal('edit')"/>
-    <ModalDelete :isOpen="isModalDeleteOpen" :info="modalDelete" @closeModal="handleModal('delete')"/>
-    <ModalInfo :isOpen="isModalInfoOpen" :info="modalInfo" @closeModal="handleModal('info')"/>
+    <ModalEdit :isOpen="isModalEditOpen" :info="ModalEdit" :object="selectedObject" @closeModal="handleModal('edit')"/>
+    <ModalDelete :isOpen="isModalDeleteOpen" :info="modalDelete" :object="selectedObject" @closeModal="handleModal('delete')"/>
+    <ModalInfo :isOpen="isModalInfoOpen" :info="modalInfo" :object="selectedObject" @closeModal="handleModal('info')"/>
   </v-container>
 </template>
 
@@ -101,10 +101,13 @@ export default {
       isModalEditOpen: false,
       isModalDeleteOpen: false,
       isModalInfoOpen: false,
+      selectedObject: {},
     }
   },
   methods: {
-    handleModal(type) {
+    handleModal(type, object) {
+      this.selectedObject = object;
+
       switch (type) {
         case "edit":
           this.isModalEditOpen = !this.isModalEditOpen;

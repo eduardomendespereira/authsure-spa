@@ -31,8 +31,8 @@ const modalDelete = {
 
 const modalInfo = {
   title: "Informações do Usuário",
-  labels: ["Id", "Nome de usuário", "Email"],
-  keys: ["id", "username", "email"],
+  labels: ["Id", "Nome de usuário", "Email", "Reino", "Criado em", "Atualizado em"],
+  keys: ["id", "username", "email", "realm_id", "created_at", "updated_at"],
 };
 
 userService.users().then((data) => {
