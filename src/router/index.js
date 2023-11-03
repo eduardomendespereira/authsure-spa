@@ -31,6 +31,11 @@ const routes = [
         component: () => import('@/views/Realms.vue'),
       },
       {
+        path: '/roles',
+        name: 'roles',
+        component: () => import('@/views/Roles.vue'),
+      },
+      {
         path: '/users',
         name: 'users',
         component: () => import('@/views/Users.vue'),

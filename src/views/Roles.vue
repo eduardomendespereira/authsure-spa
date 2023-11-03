@@ -1,0 +1,24 @@
+<template>
+  <ViewBase
+    title="Cargos"
+    :objects="roles"
+    :labels="['Id', 'Nome']"
+    :keys="['id', 'name']"
+    :key="index"
+  />
+</template>
+
+<script setup>
+import ViewBase from "./ViewBase.vue";
+import Roleservice from "@/service/roleService.js";
+import { ref } from "vue";
+
+const roleservice = new Roleservice();
+const index = ref(0);
+let roles = [];
+
+roleservice.roles().then((data) => {
+  roles = data;
+  index.value++;
+});
+</script>
