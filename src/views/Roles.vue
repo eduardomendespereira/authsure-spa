@@ -10,7 +10,7 @@
 </template>
 
 <script setup>
-import ViewBase from "./ViewBase.vue";
+import ViewBase from "@/components/ViewBase.vue";
 import Roleservice from "@/service/roleService.js";
 import { ref } from "vue";
 

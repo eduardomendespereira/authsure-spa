@@ -11,7 +11,7 @@
 
 
 <script setup>
-import ViewBase from "./ViewBase.vue";
+import ViewBase from "@/components/ViewBase.vue";
 import ClientService from "@/service/clientService.js";
 import { ref } from "vue";
 

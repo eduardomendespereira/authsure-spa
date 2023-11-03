@@ -10,7 +10,7 @@
 </template>
 
 <script setup>
-import ViewBase from "./ViewBase.vue";
+import ViewBase from "@/components/ViewBase.vue";
 import RealmService from "@/service/realmService.js";
 import { ref } from "vue";
 
