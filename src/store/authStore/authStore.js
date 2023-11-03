@@ -4,6 +4,7 @@ import { defineStore } from "pinia";
 const authUser = localStorage.getItem("auth");
 let user = authUser ? JSON.parse(authUser) : [];
 
+
 export const authUserStore = defineStore("auth", {
   state: () => {
     user;

@@ -10,9 +10,18 @@
     </v-row>
     <v-row>
       <v-col cols="12" md="5" xl="5" class="d-flex flex-row">
-        <v-btn size="x-large" variant="text" color="success">{{ createTitle }}</v-btn>
-        <v-text-field class="ml-3" clearable clear-icon="mdi-close" variant="outlined" append-inner-icon="mdi-magnify"
-          placeholder="Search" type="text">
+        <v-btn size="x-large" variant="text" color="success">{{
+          createTitle
+        }}</v-btn>
+        <v-text-field
+          class="ml-3"
+          clearable
+          clear-icon="mdi-close"
+          variant="outlined"
+          append-inner-icon="mdi-magnify"
+          placeholder="Search"
+          type="text"
+        >
         </v-text-field>
       </v-col>
 
@@ -28,7 +37,9 @@
             <tr v-for="object in objects" :key="object.id">
               <td v-for="key in keys">
                 <template v-if="typeof object[key] === 'boolean'">
-                  <v-icon v-if="object[key] === true" color="green">mdi-check</v-icon>
+                  <v-icon v-if="object[key] === true" color="green"
+                    >mdi-check</v-icon
+                  >
                   <v-icon v-else color="red">mdi-close</v-icon>
                 </template>
                 <template v-else>
@@ -36,18 +47,59 @@
                 </template>
               </td>
               <td class="text-center">
-                <v-btn color="primary" text class="mr-1" @click="handleModal('edit', object)"><v-icon>mdi-pencil</v-icon></v-btn>
-                <v-btn color="error" text class="mx-1" @click="handleModal('delete', object)"><v-icon>mdi-delete</v-icon></v-btn>
-                <v-btn color="info" text class="ml-1" @click="handleModal('info', object)"><v-icon>mdi-information-outline</v-icon></v-btn>
+                <v-btn
+                  color="primary"
+                  size="x-small"
+                  icon
+                  text
+                  class="mr-1"
+                  @click="handleModal('edit', object)"
+                  ><v-icon>mdi-pencil</v-icon></v-btn
+                >
+                <v-btn
+                  color="error"
+                  size="x-small"
+                  icon
+                  class="mx-1"
+                  @click="handleModal('delete', object)"
+                  ><v-icon>mdi-delete</v-icon></v-btn
+                >
+                <v-btn
+                  color="info"
+                  size="x-small"
+                  icon
+                  class="ml-1"
+                  @click="handleModal('info', object)"
+                  ><v-icon>mdi-information-outline</v-icon></v-btn
+                >
               </td>
             </tr>
           </tbody>
         </v-table>
       </v-col>
     </v-row>
-    <ModalEdit :isOpen="isModalEditOpen" :info="ModalEdit" :object="selectedObject" @closeModal="handleModal('edit')"/>
-    <ModalDelete :isOpen="isModalDeleteOpen" :info="modalDelete" :object="selectedObject" @closeModal="handleModal('delete')"/>
-    <ModalInfo :isOpen="isModalInfoOpen" :info="modalInfo" :object="selectedObject" @closeModal="handleModal('info')"/>
+    <ModalEdit
+      v-if="isModalEditOpen"
+      :isOpen="isModalEditOpen"
+      :info="ModalEdit"
+      :object="selectedObject"
+      @closeModal="handleModal('edit')"
+    />
+    <ModalDelete
+      v-if="isModalDeleteOpen"
+      :isOpen="isModalDeleteOpen"
+      :title="deleteBase.title"
+      :resource="modalInfo.title"
+      :message="deleteBase.message"
+      @delete="responseFromModal"
+    />
+    <ModalInfo
+      v-if="isModalInfoOpen"
+      :isOpen="isModalInfoOpen"
+      :info="modalInfo"
+      :object="selectedObject"
+      @closeModal="handleModal('info')"
+    />
   </v-container>
 </template>
 
@@ -102,7 +154,11 @@ export default {
       isModalDeleteOpen: false,
       isModalInfoOpen: false,
       selectedObject: {},
-    }
+      deleteBase: {
+        message: "Deseja realmente deletar esse registro ?",
+        title: "Deletar Registro",
+      },
+    };
   },
   methods: {
     handleModal(type, object) {
@@ -114,12 +170,17 @@ export default {
           break;
         case "delete":
           this.isModalDeleteOpen = !this.isModalDeleteOpen;
+          this.$emit("delete", object);
           break;
         case "info":
           this.isModalInfoOpen = !this.isModalInfoOpen;
           break;
       }
     },
-  }
-}
+    responseFromModal(event) {
+      console.log(event);
+      this.$emit("response", event);
+    },
+  },
+};
 </script>
