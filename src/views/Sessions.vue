@@ -5,6 +5,9 @@
         :objects="sessions"
         :labels="['Id', 'Ativa']"
         :keys="['id', 'is_active']"
+        ModalEditTitle="Editar Sessão"
+        modalDeleteTitle="Deletar Sessão"
+        modalInfoTitle="Informações da Sessão"
         :key="index"
     />
 </template>

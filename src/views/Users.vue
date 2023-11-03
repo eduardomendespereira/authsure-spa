@@ -5,6 +5,9 @@
     :objects="users"
     :labels="['Id', 'Nome de usuário', 'Email']"
     :keys="['id', 'username', 'email']"
+    ModalEditTitle="Editar Usuário"
+    modalDeleteTitle="Deletar Usuário"
+    modalInfoTitle="Informações do Usuário"
     :key="index"
   />
 </template>

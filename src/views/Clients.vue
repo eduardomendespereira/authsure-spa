@@ -5,6 +5,9 @@
         :objects="clients"
         :labels="['Id', 'Nome',  'Chave', 'Segredo']"
         :keys="['id', 'name', 'key', 'secret']"
+        ModalEditTitle="Editar Cliente"
+        modalDeleteTitle="Deletar Cliente"
+        modalInfoTitle="Informações do Cliente"
         :key="index"
     />
 </template>

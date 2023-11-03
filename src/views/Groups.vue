@@ -5,6 +5,9 @@
     :objects="groups"
     :labels="['Id', 'Nome']"
     :keys="['id', 'name']"
+    ModalEditTitle="Editar Grupo"
+    modalDeleteTitle="Deletar Grupo"
+    modalInfoTitle="Informações do Grupo"
     :key="index"
   />
 </template>

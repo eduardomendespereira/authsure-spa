@@ -5,6 +5,9 @@
     :objects="realms"
     :labels="['Id', 'Nome']"
     :keys="['id', 'name']"
+    ModalEditTitle="Editar Reino"
+    modalDeleteTitle="Deletar Reino"
+    modalInfoTitle="Informações do Reino"
     :key="index"
     />
 </template>

@@ -5,6 +5,9 @@
     :objects="roles"
     :labels="['Id', 'Nome']"
     :keys="['id', 'name']"
+    ModalEditTitle="Editar Cargo"
+    modalDeleteTitle="Deletar Cargo"
+    modalInfoTitle="Informações do Cargo"
     :key="index"
   />
 </template>
