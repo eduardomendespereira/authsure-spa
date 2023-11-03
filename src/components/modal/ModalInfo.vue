@@ -1,7 +1,17 @@
 <template>
-    <ModalBase :isOpen="dialog" :title="info?.title">
-        <slot>
-            <div>hello {{ info }}</div>
+    <ModalBase :isOpen="dialog" :title="info.title">
+        <slot v-if="object">
+            <div v-for="(key, index) in info.keys" :key="index" class="table-row">
+                <div class="label mr-1">{{ info.labels[index] }}:</div>
+
+                <template v-if="typeof object[key] === 'boolean'">
+                    <v-icon v-if="object[key] === true" color="green">mdi-check</v-icon>
+                    <v-icon v-else color="red">mdi-close</v-icon>
+                </template>
+                <template v-else>
+                    {{ object[key] }}
+                </template>
+            </div>
         </slot>
     </ModalBase>
 </template>
@@ -39,4 +49,20 @@ export default {
     },
 }
 </script>
+
+<style>
+.table-row {
+    display: flex;
+    margin-bottom: 8px;
+}
+
+.label {
+    font-weight: bold;
+    text-align: left;
+}
+
+.key {
+    text-align: left;
+}
+</style>
   
