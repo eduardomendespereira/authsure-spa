@@ -1,6 +1,8 @@
 <template>
     <ModalBase :isOpen="dialog" :title="title">
-        <slot>Info</slot>
+        <slot>
+            <div>hello</div>
+        </slot>
     </ModalBase>
 </template>
   
@@ -18,6 +20,10 @@ export default {
         },
         title: {
             type: String,
+            required: true,
+        },
+        object: {
+            type: Object,
             required: true,
         },
     },
