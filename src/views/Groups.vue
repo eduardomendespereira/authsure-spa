@@ -31,8 +31,8 @@ const modalDelete = {
 
 const modalInfo = {
   title: "Informações do Grupo",
-  labels: ["Id", "Nome"],
-  keys: ["id", "name"],
+  labels: ["Id", "Nome", "Criado em", "Atualizado em"],
+  keys: ["id", "name", "created_at", "updated_at"],
 };
 
 groupService.groups().then((data) => {
