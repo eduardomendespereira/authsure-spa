@@ -5,9 +5,9 @@
         :objects="sessions"
         :labels="['Id', 'Ativa']"
         :keys="['id', 'is_active']"
-        ModalEditTitle="Editar Sessão"
-        modalDeleteTitle="Deletar Sessão"
-        modalInfoTitle="Informações da Sessão"
+        :modalEdit="modalEdit"
+        :modalDelete="modalDelete"
+        :modalInfo="modalInfo"
         :key="index"
     />
 </template>
@@ -21,6 +21,20 @@ import { ref } from "vue";
 const sessionService = new SessionService();
 const index = ref(0);
 let sessions = [];
+
+const modalEdit = {
+  title: "Editar Sessão",
+};
+
+const modalDelete = {
+  title: "Deletar Sessão",
+};
+
+const modalInfo = {
+  title: "Informações da Sessão",
+  labels: ["Id", "Ativa"],
+  keys: ["id", "is_active"],
+};
 
 sessionService.sessions().then((data) => {
   sessions = data;

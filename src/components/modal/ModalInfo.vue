@@ -1,7 +1,7 @@
 <template>
-    <ModalBase :isOpen="dialog" :title="title">
+    <ModalBase :isOpen="dialog" :title="info?.title">
         <slot>
-            <div>hello</div>
+            <div>hello {{ info }}</div>
         </slot>
     </ModalBase>
 </template>
@@ -18,8 +18,8 @@ export default {
             type: Boolean,
             required: true,
         },
-        title: {
-            type: String,
+        info: {
+            type: Object,
             required: true,
         },
         object: {

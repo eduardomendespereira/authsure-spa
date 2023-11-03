@@ -45,9 +45,9 @@
         </v-table>
       </v-col>
     </v-row>
-    <ModalEdit :isOpen="isModalEditOpen" :title="ModalEditTitle" @closeModal="handleModal('edit')"/>
-    <ModalDelete :isOpen="isModalDeleteOpen" :title="modalDeleteTitle" @closeModal="handleModal('delete')"/>
-    <ModalInfo :isOpen="isModalInfoOpen" :title="modalInfoTitle" @closeModal="handleModal('info')"/>
+    <ModalEdit :isOpen="isModalEditOpen" :info="ModalEdit" @closeModal="handleModal('edit')"/>
+    <ModalDelete :isOpen="isModalDeleteOpen" :info="modalDelete" @closeModal="handleModal('delete')"/>
+    <ModalInfo :isOpen="isModalInfoOpen" :info="modalInfo" @closeModal="handleModal('info')"/>
   </v-container>
 </template>
 
@@ -83,16 +83,16 @@ export default {
       type: Array,
       required: true,
     },
-    ModalEditTitle: {
-      type: String,
+    ModalEdit: {
+      type: Object,
       required: true,
     },
-    modalDeleteTitle: {
-      type: String,
+    modalDelete: {
+      type: Object,
       required: true,
     },
-    modalInfoTitle: {
-      type: String,
+    modalInfo: {
+      type: Object,
       required: true,
     },
   },

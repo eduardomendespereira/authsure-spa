@@ -1,5 +1,5 @@
 <template>
-    <ModalBase :isOpen="dialog" :title="title">
+    <ModalBase :isOpen="dialog" :title="info?.title">
         <slot>Delete</slot>
     </ModalBase>
 </template>
@@ -16,8 +16,8 @@ export default {
             type: Boolean,
             required: true,
         },
-        title: {
-            type: String,
+        object: {
+            type: Object,
             required: true,
         },
     },

@@ -5,9 +5,9 @@
     :objects="realms"
     :labels="['Id', 'Nome']"
     :keys="['id', 'name']"
-    ModalEditTitle="Editar Reino"
-    modalDeleteTitle="Deletar Reino"
-    modalInfoTitle="Informações do Reino"
+    :modalEdit="modalEdit"
+    :modalDelete="modalDelete"
+    :modalInfo="modalInfo"
     :key="index"
     />
 </template>
@@ -20,6 +20,20 @@ import { ref } from "vue";
 const realmService = new RealmService();
 const index = ref(0);
 let realms = [];
+
+const modalEdit = {
+  title: "Editar Reino",
+};
+
+const modalDelete = {
+  title: "Deletar Reino",
+};
+
+const modalInfo = {
+  title: "Informações do Reino",
+  labels: ["Id", "Nome"],
+  keys: ["id", "name"],
+};
 
 realmService.realms().then((data) => {
   realms = data;
