@@ -5,9 +5,9 @@
     :objects="roles"
     :labels="['Id', 'Nome']"
     :keys="['id', 'name']"
-    ModalEditTitle="Editar Cargo"
-    modalDeleteTitle="Deletar Cargo"
-    modalInfoTitle="Informações do Cargo"
+    :modalEdit="modalEdit"
+    :modalDelete="modalDelete"
+    :modalInfo="modalInfo"
     :key="index"
   />
 </template>
@@ -20,6 +20,20 @@ import { ref } from "vue";
 const roleservice = new Roleservice();
 const index = ref(0);
 let roles = [];
+
+const modalEdit = {
+  title: "Editar Cargo",
+};
+
+const modalDelete = {
+  title: "Deletar Cargo",
+};
+
+const modalInfo = {
+  title: "Informações do Cargo",
+  labels: ["Id", "Nome"],
+  keys: ["id", "name"],
+};
 
 roleservice.roles().then((data) => {
   roles = data;

@@ -5,9 +5,9 @@
     :objects="users"
     :labels="['Id', 'Nome de usuário', 'Email']"
     :keys="['id', 'username', 'email']"
-    ModalEditTitle="Editar Usuário"
-    modalDeleteTitle="Deletar Usuário"
-    modalInfoTitle="Informações do Usuário"
+    :modalEdit="modalEdit"
+    :modalDelete="modalDelete"
+    :modalInfo="modalInfo"
     :key="index"
   />
 </template>
@@ -20,6 +20,20 @@ import { ref } from "vue";
 const userService = new UserService();
 const index = ref(0);
 let users = [];
+
+const modalEdit = {
+  title: "Editar Usuário",
+};
+
+const modalDelete = {
+  title: "Deletar Usuário",
+};
+
+const modalInfo = {
+  title: "Informações do Usuário",
+  labels: ["Id", "Nome de usuário", "Email"],
+  keys: ["id", "username", "email"],
+};
 
 userService.users().then((data) => {
   users = data;
