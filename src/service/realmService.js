@@ -1,6 +1,6 @@
-import Service from "../Service";
+import Service from "./Service";
 
-class RealmsService extends Service {
+class RealmService extends Service {
   constructor() {
     super();
 
@@ -13,4 +13,4 @@ class RealmsService extends Service {
   }
 }
 
-export default RealmsService;
+export default RealmService;

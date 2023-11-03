@@ -2,7 +2,7 @@
 <v-container fluid>
     <v-row>
         <v-col cols="12" class="d-flex justify-start mt-1">
-            <p class="text-h4">Clients</p>
+            <p class="text-h4">Clientes</p>
         </v-col>
         <v-col cols="2" class="d-flex justify-start">
             <v-divider></v-divider>
@@ -38,7 +38,7 @@
                 <thead>
                   <tr>
                     <th class="text-left">
-                        ClientId
+                        Id
                     </th>
                     <th class="text-left">
                         Enabled

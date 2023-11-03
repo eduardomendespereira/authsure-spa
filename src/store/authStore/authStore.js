@@ -1,4 +1,4 @@
-import AuthService from "@/service/auth/authService";
+import AuthService from "@/service/authService";
 import { defineStore } from "pinia";
 
 const authUser = localStorage.getItem("auth");
