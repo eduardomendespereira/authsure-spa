@@ -11,15 +11,8 @@
     <v-row>
       <v-col cols="12" md="5" xl="5" class="d-flex flex-row">
         <v-btn size="x-large" variant="text" color="success">Novo {{ title }}</v-btn>
-        <v-text-field
-          class="ml-3"
-          clearable
-          clear-icon="mdi-close"
-          variant="outlined"
-          append-inner-icon="mdi-magnify"
-          placeholder="Search"
-          type="text"
-        >
+        <v-text-field class="ml-3" clearable clear-icon="mdi-close" variant="outlined" append-inner-icon="mdi-magnify"
+          placeholder="Search" type="text">
         </v-text-field>
       </v-col>
 
@@ -33,7 +26,15 @@
           </thead>
           <tbody>
             <tr v-for="object in objects" :key="object.id">
-              <td v-for="key in keys">{{ object[key] }}</td>
+              <td v-for="key in keys">
+                <template v-if="typeof object[key] === 'boolean'">
+                  <v-icon v-if="object[key] === true" color="green">mdi-check</v-icon>
+                  <v-icon v-else color="red">mdi-close</v-icon>
+                </template>
+                <template v-else>
+                  {{ object[key] }}
+                </template>
+              </td>
               <td class="text-center">
                 <v-btn color="primary" text class="mr-1"><v-icon>mdi-pencil</v-icon></v-btn>
                 <v-btn color="error" text class="mx-1"><v-icon>mdi-delete</v-icon></v-btn>
