@@ -1,4 +1,4 @@
-import Service from "./Service";
+import Service from "./serviceBase";
 
 class RealmService extends Service {
   constructor() {

@@ -1,16 +1,16 @@
 import Service from "./serviceBase";
 
-class UserService extends Service {
+class SessionService extends Service {
   constructor() {
     super();
 
-    this.resource = "/users";
+    this.resource = "/sessions";
   }
 
-  async users() {
+  async sessions() {
     const requestUrl = this.resource;
     return await this.getAPI(requestUrl);
   }
 }
 
-export default UserService;
+export default SessionService;

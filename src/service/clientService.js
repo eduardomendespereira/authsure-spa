@@ -1,16 +1,16 @@
 import Service from "./serviceBase";
 
-class UserService extends Service {
+class ClientService extends Service {
   constructor() {
     super();
 
-    this.resource = "/users";
+    this.resource = "/clients";
   }
 
-  async users() {
+  async clients() {
     const requestUrl = this.resource;
     return await this.getAPI(requestUrl);
   }
 }
 
-export default UserService;
+export default ClientService;

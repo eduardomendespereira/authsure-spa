@@ -36,7 +36,8 @@
               <td v-for="key in keys">{{ object[key] }}</td>
               <td class="text-center">
                 <v-btn color="primary" text class="mr-1"><v-icon>mdi-pencil</v-icon></v-btn>
-                <v-btn color="error" text class="ml-1"><v-icon>mdi-delete</v-icon></v-btn>
+                <v-btn color="error" text class="mx-1"><v-icon>mdi-delete</v-icon></v-btn>
+                <v-btn color="info" text class="ml-1"><v-icon>mdi-information-outline</v-icon></v-btn>
               </td>
             </tr>
           </tbody>
