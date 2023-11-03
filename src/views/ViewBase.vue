@@ -1,0 +1,68 @@
+<template>
+  <v-container fluid>
+    <v-row>
+      <v-col cols="12" class="d-flex justify-start mt-1">
+        <p class="text-h4">{{ title }}</p>
+      </v-col>
+      <v-col cols="2" class="d-flex justify-start">
+        <v-divider></v-divider>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12" md="5" xl="5" class="d-flex flex-row">
+        <v-btn size="x-large" variant="text" color="success">Novo {{ title }}</v-btn>
+        <v-text-field
+          class="ml-3"
+          clearable
+          clear-icon="mdi-close"
+          variant="outlined"
+          append-inner-icon="mdi-magnify"
+          placeholder="Search"
+          type="text"
+        >
+        </v-text-field>
+      </v-col>
+
+      <v-col cols="12">
+        <v-table theme="dark" :key="index">
+          <thead>
+            <tr>
+              <th class="text-left" v-for="label in labels">{{ label }}</th>
+              <th class="text-center">Opções</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="object in objects" :key="object.id">
+              <td v-for="key in keys">{{ object[key] }}</td>
+              <td class="text-center">
+                <v-btn color="primary" text class="mr-1"><v-icon>mdi-pencil</v-icon></v-btn>
+                <v-btn color="error" text class="ml-1"><v-icon>mdi-delete</v-icon></v-btn>
+              </td>
+            </tr>
+          </tbody>
+        </v-table>
+      </v-col>
+    </v-row>
+  </v-container>
+</template>
+
+<script setup>
+defineProps({
+  title: {
+    type: String,
+    required: true,
+  },
+  objects: {
+    type: Array,
+    required: true,
+  },
+  labels: {
+    type: Array,
+    required: true,
+  },
+  keys: {
+    type: Array,
+    required: true,
+  },
+})
+</script>
