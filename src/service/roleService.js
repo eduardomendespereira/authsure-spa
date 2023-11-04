@@ -7,9 +7,9 @@ class RoleService extends Service {
     this.resource = "/roles";
   }
 
-  async roles() {
+  async roles(page, c) {
     const requestUrl = this.resource;
-    return await this.getAPI(requestUrl);
+    return await this.getAPI(requestUrl, page, c);
   }
 }
 

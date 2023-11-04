@@ -8,7 +8,9 @@
     :modalEdit="modalEdit"
     :modalDelete="modalDelete"
     :modalInfo="modalInfo"
+    :page="currentPage"
     :key="index"
+    @paginate="fetchGroups"
   />
 </template>
 
@@ -19,6 +21,7 @@ import { ref } from "vue";
 
 const groupService = new GroupService();
 const index = ref(0);
+const currentPage = ref(1);
 let groups = [];
 
 const modalEdit = {
@@ -35,8 +38,13 @@ const modalInfo = {
   keys: ["id", "name", "created_at", "updated_at"],
 };
 
-groupService.groups().then((data) => {
-  groups = data;
-  index.value++;
-});
+function fetchGroups(page=1, c=10) {
+  groupService.groups(page, c).then((data) => {
+    groups = data;
+    index.value++;
+    currentPage.value = page
+  });
+}
+
+fetchGroups();
 </script>

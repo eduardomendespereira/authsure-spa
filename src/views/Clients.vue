@@ -1,15 +1,17 @@
 <template>
-    <ViewBase
-        title="Clientes"
-        createTitle="Novo Cliente"
-        :objects="clients"
-        :labels="['Id', 'Nome',  'Chave', 'Segredo']"
-        :keys="['id', 'name', 'key', 'secret']"
-        :modalEdit="modalEdit"
-        :modalDelete="modalDelete"
-        :modalInfo="modalInfo"
-        :key="index"
-    />
+  <ViewBase 
+    title="Clientes" 
+    createTitle="Novo Cliente" 
+    :objects="clients" 
+    :labels="['Id', 'Nome', 'Chave', 'Segredo']"
+    :keys="['id', 'name', 'key', 'secret']" 
+    :modalEdit="modalEdit" 
+    :modalDelete="modalDelete" 
+    :modalInfo="modalInfo"
+    :page="currentPage"
+    :key="index"
+    @paginate="fetchClients"
+  />
 </template>
 
 
@@ -20,6 +22,7 @@ import { ref } from "vue";
 
 const clientService = new ClientService();
 const index = ref(0);
+const currentPage = ref(1);
 let clients = [];
 
 const modalEdit = {
@@ -36,9 +39,13 @@ const modalInfo = {
   keys: ["id", "name", "key", "secret", "realm_id", "description", "created_at", "updated_at"],
 };
 
+function fetchClients(page=1, c=10) {
+  clientService.clients(page, c).then((data) => {
+    clients = data;
+    index.value++;
+    currentPage.value = page;
+  });
+}
 
-clientService.clients().then((data) => {
-  clients = data;
-  index.value++;
-});
+fetchClients();
 </script>

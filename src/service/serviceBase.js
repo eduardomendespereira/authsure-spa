@@ -57,9 +57,9 @@ export default class Service {
     
       /* API METHODS */
     
-      async getAPI(requestUrl) {
+      async getAPI(requestUrl, page=1, c=10) {
         try {
-          let response = await http.get(requestUrl)
+          let response = await http.get(`${requestUrl}?page=${page}&c=${c}`)
           return response.data
         } catch (e) {
           return this.handlingError(e)

@@ -7,9 +7,9 @@ class RealmService extends Service {
     this.resource = "/realms";
   }
 
-  async realms() {
+  async realms(page, c) {
     const requestUrl = this.resource;
-    return await this.getAPI(requestUrl);
+    return await this.getAPI(requestUrl, page, c);
   }
 }
 

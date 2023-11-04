@@ -7,9 +7,9 @@ class ClientService extends Service {
     this.resource = "/clients";
   }
 
-  async clients() {
+  async clients(page, c) {
     const requestUrl = this.resource;
-    return await this.getAPI(requestUrl);
+    return await this.getAPI(requestUrl, page, c);
   }
 }
 

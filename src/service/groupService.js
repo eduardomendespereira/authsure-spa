@@ -7,9 +7,9 @@ class GroupService extends Service {
     this.resource = "/groups";
   }
 
-  async groups() {
+  async groups(page, c) {
     const requestUrl = this.resource;
-    return await this.getAPI(requestUrl);
+    return await this.getAPI(requestUrl, page, c);
   }
 }
 

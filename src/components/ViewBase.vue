@@ -79,6 +79,7 @@
         </v-table>
       </v-col>
     </v-row>
+    <Pagination :currentPage="page" @paginate="paginate"/>
     <ModalEdit
       v-if="isModalEditOpen"
       :isOpen="isModalEditOpen"
@@ -108,12 +109,14 @@
 import ModalEdit from "@/components/modal/ModalEdit.vue";
 import ModalDelete from "@/components/modal/ModalDelete.vue";
 import ModalInfo from "@/components/modal/ModalInfo.vue";
+import Pagination from "@/components/Pagination.vue";
 
 export default {
   components: {
     ModalInfo,
     ModalDelete,
     ModalEdit,
+    Pagination,
   },
 
   computed: {
@@ -172,6 +175,10 @@ export default {
       type: Object,
       required: true,
     },
+    page: {
+      type: Number,
+      default: 1
+    }
   },
   data() {
     return {
@@ -204,9 +211,11 @@ export default {
       }
     },
     responseFromModal(event) {
-      console.log(event);
       this.$emit("response", event);
     },
+    paginate(page) {
+      this.$emit('paginate', page)
+    }
   },
 };
 </script>
