@@ -9,6 +9,7 @@
     :modalDelete="modalDelete"
     :modalInfo="modalInfo"
     :page="currentPage"
+    :lastPage="lastPage"
     :key="index"
     @paginate="fetchGroups"
   />
@@ -22,6 +23,7 @@ import { ref } from "vue";
 const groupService = new GroupService();
 const index = ref(0);
 const currentPage = ref(1);
+const lastPage = ref(1);
 let groups = [];
 
 const modalEdit = {
@@ -40,9 +42,10 @@ const modalInfo = {
 
 function fetchGroups(page=1, c=10) {
   groupService.groups(page, c).then((data) => {
-    groups = data;
-    index.value++;
+    groups = data.groups;
     currentPage.value = page
+    lastPage.value = data.last_page;
+    index.value++;
   });
 }
 

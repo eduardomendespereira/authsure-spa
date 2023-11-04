@@ -1,6 +1,6 @@
 <template>
     <div class="text-center">
-        <v-pagination v-model="page" :length="15" :total-visible="7"></v-pagination>
+        <v-pagination v-model="page" :length="length" :total-visible="7"></v-pagination>
     </div>
 </template>
 <script>
@@ -9,11 +9,16 @@ export default {
         currentPage: {
             type: Number,
             default: 1
+        },
+        lastPage: {
+            type: Number,
+            default: 1
         }
     },
     data() {
         return {
-            page: this.currentPage
+            page: this.currentPage,
+            length: this.lastPage
         }
     },
     watch: {

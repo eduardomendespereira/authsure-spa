@@ -9,6 +9,7 @@
     :modalDelete="modalDelete"
     :modalInfo="modalInfo"
     :page="currentPage"
+    :lastPage="lastPage"
     :key="index"
     @paginate="fetchUsers"
   />
@@ -22,6 +23,7 @@ import { ref } from "vue";
 const userService = new UserService();
 const index = ref(0);
 const currentPage = ref(1);
+const lastPage = ref(1);
 let users = [];
 
 const modalEdit = {
@@ -40,9 +42,10 @@ const modalInfo = {
 
 function fetchUsers(page=1, c=10) {
   userService.users(page, c).then((data) => {
-    users = data;
-    index.value++;
+    users = data.users;
     currentPage.value = page
+    lastPage.value = data.last_page;
+    index.value++;
   });
 }
 

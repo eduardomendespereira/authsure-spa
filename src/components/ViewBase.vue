@@ -79,7 +79,7 @@
         </v-table>
       </v-col>
     </v-row>
-    <Pagination :currentPage="page" @paginate="paginate"/>
+    <Pagination :currentPage="page" :lastPage="lastPage" @paginate="paginate"/>
     <ModalEdit
       v-if="isModalEditOpen"
       :isOpen="isModalEditOpen"
@@ -176,6 +176,10 @@ export default {
       required: true,
     },
     page: {
+      type: Number,
+      default: 1
+    },
+    lastPage: {
       type: Number,
       default: 1
     }

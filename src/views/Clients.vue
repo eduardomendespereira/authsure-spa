@@ -9,6 +9,7 @@
     :modalDelete="modalDelete" 
     :modalInfo="modalInfo"
     :page="currentPage"
+    :lastPage="lastPage"
     :key="index"
     @paginate="fetchClients"
   />
@@ -23,6 +24,7 @@ import { ref } from "vue";
 const clientService = new ClientService();
 const index = ref(0);
 const currentPage = ref(1);
+const lastPage = ref(1);
 let clients = [];
 
 const modalEdit = {
@@ -41,9 +43,10 @@ const modalInfo = {
 
 function fetchClients(page=1, c=10) {
   clientService.clients(page, c).then((data) => {
-    clients = data;
-    index.value++;
+    clients = data.clients;
     currentPage.value = page;
+    lastPage.value = data.last_page;
+    index.value++;
   });
 }
 

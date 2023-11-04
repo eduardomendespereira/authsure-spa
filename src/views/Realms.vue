@@ -9,6 +9,7 @@
     :modalDelete="modalDelete"
     :modalInfo="modalInfo"
     :page="currentPage"
+    :lastPage="lastPage"
     :key="index"
     @paginate="fetchRealms"
   />
@@ -22,6 +23,7 @@ import { ref } from "vue";
 const realmService = new RealmService();
 const index = ref(0);
 const currentPage = ref(1);
+const lastPage = ref(1);
 let realms = [];
 
 const modalEdit = {
@@ -40,9 +42,10 @@ const modalInfo = {
 
 function fetchRealms(page=1, c=10) {
   realmService.realms(page, c).then((data) => {
-    realms = data;
-    index.value++;
+    realms = data.realms;
     currentPage.value = page
+    lastPage.value = data.last_page;
+    index.value++;
   });
 }
 

@@ -9,6 +9,7 @@
         :modalDelete="modalDelete"
         :modalInfo="modalInfo"
         :page="currentPage"
+        :lastPage="lastPage"
         :key="index"
         @paginate="fetchSessions"
     />
@@ -23,6 +24,7 @@ import { ref } from "vue";
 const sessionService = new SessionService();
 const index = ref(0);
 const currentPage = ref(1);
+const lastPage = ref(1);
 let sessions = [];
 
 const modalEdit = {
@@ -41,9 +43,10 @@ const modalInfo = {
 
 function fetchSessions(page=1, c=10) {
   sessionService.sessions(page, c).then((data) => {
-    sessions = data;
-    index.value++;
+    sessions = data.sessions;
     currentPage.value = page
+    lastPage.value = data.last_page;
+    index.value++;
   });
 }
 
