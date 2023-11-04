@@ -20,6 +20,7 @@
           variant="outlined"
           append-inner-icon="mdi-magnify"
           placeholder="Search"
+          v-model="filterText"
           type="text"
         >
         </v-text-field>
@@ -34,7 +35,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="object in objects" :key="object.id">
+            <tr v-for="object in filtered" :key="object.id">
               <td v-for="key in keys">
                 <template v-if="typeof object[key] === 'boolean'">
                   <v-icon v-if="object[key] === true" color="green"
@@ -114,6 +115,30 @@ export default {
     ModalDelete,
     ModalEdit,
   },
+
+  computed: {
+    filtered() {
+      const filtered =
+        this.filterText && this.filterText != ""
+          ? this.objects.filter((obj) => {
+              if (
+                obj &&
+                (obj.hasOwnProperty("name") || obj.hasOwnProperty("username"))
+              ) {
+                const key = obj.hasOwnProperty("username")
+                  ? "username"
+                  : "name";
+                return obj[key]
+                  .toLowerCase()
+                  .includes(this.filterText.toLowerCase());
+              }
+
+              return obj;
+            })
+          : this.objects;
+      return filtered;
+    },
+  },
   props: {
     title: {
       type: String,
@@ -154,6 +179,7 @@ export default {
       isModalDeleteOpen: false,
       isModalInfoOpen: false,
       selectedObject: {},
+      filterText: "",
       deleteBase: {
         message: "Deseja realmente deletar esse registro ?",
         title: "Deletar Registro",
