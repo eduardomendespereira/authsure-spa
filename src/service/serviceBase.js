@@ -1,4 +1,4 @@
-import http from "@/service";
+import http from "@/service/index";
 
 export default class Service {
     

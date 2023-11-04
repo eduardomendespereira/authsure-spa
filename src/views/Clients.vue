@@ -1,12 +1,12 @@
 <template>
-  <ViewBase 
-    title="Clientes" 
-    createTitle="Novo Cliente" 
-    :objects="clients" 
+  <ViewBase
+    title="Clientes"
+    createTitle="Novo Cliente"
+    :objects="clients"
     :labels="['Id', 'Nome', 'Chave', 'Segredo']"
-    :keys="['id', 'name', 'key', 'secret']" 
-    :modalEdit="modalEdit" 
-    :modalDelete="modalDelete" 
+    :keys="['id', 'name', 'key', 'secret']"
+    :modalEdit="modalEdit"
+    :modalDelete="modalDelete"
     :modalInfo="modalInfo"
     :page="currentPage"
     :lastPage="lastPage"
@@ -14,7 +14,6 @@
     @paginate="fetchClients"
   />
 </template>
-
 
 <script setup>
 import ViewBase from "@/components/ViewBase.vue";
@@ -37,11 +36,29 @@ const modalDelete = {
 
 const modalInfo = {
   title: "Informações do Cliente",
-  labels: ["Id", "Nome", "Chave", "Segredo", "Reino", "Descrição", "Criado em", "Atualizado em"],
-  keys: ["id", "name", "key", "secret", "realm_id", "description", "created_at", "updated_at"],
+  labels: [
+    "Id",
+    "Nome",
+    "Chave",
+    "Segredo",
+    "Reino",
+    "Descrição",
+    "Criado em",
+    "Atualizado em",
+  ],
+  keys: [
+    "id",
+    "name",
+    "key",
+    "secret",
+    "realm_id",
+    "description",
+    "created_at",
+    "updated_at",
+  ],
 };
 
-function fetchClients(page=1, c=10) {
+function fetchClients(page = 1, c = 10) {
   clientService.clients(page, c).then((data) => {
     clients = data.clients;
     currentPage.value = page;
