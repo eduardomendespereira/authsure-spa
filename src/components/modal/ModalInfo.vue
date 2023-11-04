@@ -73,7 +73,7 @@ export default {
 
     convertData(key) {
       key = new Date(key);
-      return key.toLocaleDateString("pt-BR").replace(/\//g, "-");
+      return key.toLocaleString("pt-BR").replace(/\//g, "/").replace(", ", " - ");
     },
   },
   watch: {
