@@ -55,7 +55,13 @@
               </v-text-field>
             </v-col>
             <v-col cols="6">
-              <v-select :label="'Id reino'" :items="['1']" variant="underlined">
+              <v-select
+                item-title="name"
+                item-value="id"
+                :label="'Id reino'"
+                :items="realms"
+                variant="underlined"
+              >
               </v-select>
             </v-col>
           </v-row>
@@ -77,28 +83,39 @@
 import ModalBase from "@/components/modal/ModalBase.vue";
 import { ref, onMounted } from "vue";
 import clientComp from "@/compositionAPI/clientComp";
+import RealmService from "@/service/realmService.js";
 
 const { client, sendPayload, realmList } = clientComp();
-
-onMounted(() => {
-  if (!props.id) {
-    console.log(props.id);
-    console.log("id não identificado");
-  }
-});
-
+const form = ref(null);
 const props = defineProps({
   dialog: Boolean,
   id: Number,
 });
-
+const realms = ref([]);
+const realmService = new RealmService();
 const emit = defineEmits("close");
+
+onMounted(() => {
+  try {
+    fetchRealms();
+    if (!props.id) {
+      console.log(props.id);
+      console.log("id não identificado");
+    }
+  } catch (error) {
+    console.error(error);
+  }
+});
 
 function closeDialog() {
   emit("close", false);
 }
 
-const form = ref(null);
+function fetchRealms(page = 1, c = 10) {
+  realmService.realms(page, c).then((data) => {
+    realms.value = data.realms;
+  });
+}
 </script>
 
 <style lang="scss" scoped></style>
