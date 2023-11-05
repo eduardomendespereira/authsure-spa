@@ -10,9 +10,13 @@
     </v-row>
     <v-row>
       <v-col cols="12" md="5" xl="5" class="d-flex flex-row">
-        <v-btn size="x-large" variant="text" color="success">{{
-          createTitle
-        }}</v-btn>
+        <v-btn
+          size="x-large"
+          variant="text"
+          @click="openManage"
+          color="success"
+          >{{ createTitle }}</v-btn
+        >
         <v-text-field
           class="ml-3"
           clearable
@@ -79,7 +83,7 @@
         </v-table>
       </v-col>
     </v-row>
-    <Pagination :currentPage="page" :lastPage="lastPage" @paginate="paginate"/>
+    <Pagination :currentPage="page" :lastPage="lastPage" @paginate="paginate" />
     <ModalEdit
       v-if="isModalEditOpen"
       :isOpen="isModalEditOpen"
@@ -177,12 +181,12 @@ export default {
     },
     page: {
       type: Number,
-      default: 1
+      default: 1,
     },
     lastPage: {
       type: Number,
-      default: 1
-    }
+      default: 1,
+    },
   },
   data() {
     return {
@@ -217,9 +221,14 @@ export default {
     responseFromModal(event) {
       this.$emit("response", event);
     },
+
+    openManage() {
+      this.$emit("openManage", true);
+    },
+
     paginate(page) {
-      this.$emit('paginate', page)
-    }
+      this.$emit("paginate", page);
+    },
   },
 };
 </script>

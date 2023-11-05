@@ -47,6 +47,7 @@ http.interceptors.response.use(
     if (originalRequest.data) {
       const data = JSON.parse(originalRequest.data);
       if (data.first) {
+        localStorage.removeItem("auth");
         return error;
       }
     }
