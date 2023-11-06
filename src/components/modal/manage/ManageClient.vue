@@ -46,8 +46,8 @@
             </v-col>
             <v-col cols="6">
               <v-text-field
-                :placeholder="'Nome'"
-                :label="'Nome'"
+                :placeholder="'Secret'"
+                :label="'Secret'"
                 variant="underlined"
                 required
                 v-model="client.secret"
@@ -85,18 +85,14 @@
 import ModalBase from "@/components/modal/ModalBase.vue";
 import { ref, onMounted } from "vue";
 import clientComp from "@/compositionAPI/clientComp";
-import RealmService from "@/service/realmService.js";
 
-const { client, sendPayload, realmList } = clientComp();
+const { client, sendPayload, realmList, realms, fetchRealms } = clientComp();
 const form = ref(null);
 const props = defineProps({
   dialog: Boolean,
   id: Number,
 });
-const currentPg = ref(1);
-const lastPg = ref(0);
-const realms = ref([]);
-const realmService = new RealmService();
+
 const emit = defineEmits("close");
 
 onMounted(() => {
@@ -114,17 +110,13 @@ onMounted(() => {
 function closeDialog() {
   emit("close", false);
 }
-
 function save() {
-  console.log(client.value.realm_id);
-}
-
-function fetchRealms(page = 1, c = 40) {
-  realmService.realms(page, c).then((data) => {
-    realms.value = data.realms;
-    currentPg.value = page;
-    lastPg.value = data.last_page;
-  });
+  try {
+    sendPayload();
+    closeDialog();
+  } catch (error) {
+    console.log(error);
+  }
 }
 </script>
 
