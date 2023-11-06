@@ -14,6 +14,17 @@
       <v-card-text>
         <v-form ref="form">
           <v-row>
+            <v-col cols="6" v-if="props.id">
+              <v-text-field
+                :placeholder="'Id'"
+                :label="'Id'"
+                required
+                variant="underlined"
+                v-model="client.id"
+                :disabled="true"
+              >
+              </v-text-field>
+            </v-col>
             <v-col cols="6">
               <v-text-field
                 :placeholder="'Nome'"
@@ -86,7 +97,8 @@ import ModalBase from "@/components/modal/ModalBase.vue";
 import { ref, onMounted } from "vue";
 import clientComp from "@/compositionAPI/clientComp";
 
-const { client, sendPayload, realmList, realms, fetchRealms } = clientComp();
+const { client, sendPayload, realmList, realms, fetchRealms, getClient } =
+  clientComp();
 const form = ref(null);
 const props = defineProps({
   dialog: Boolean,
@@ -95,12 +107,13 @@ const props = defineProps({
 
 const emit = defineEmits("close");
 
-onMounted(() => {
+onMounted(async () => {
   try {
     fetchRealms();
     if (!props.id) {
       console.log(props.id);
-      console.log("id não identificado");
+    } else {
+      getClient(props.id);
     }
   } catch (error) {
     console.error(error);
@@ -110,9 +123,10 @@ onMounted(() => {
 function closeDialog() {
   emit("close", false);
 }
+
 function save() {
   try {
-    sendPayload();
+    sendPayload(props.id ? props.id : false);
     closeDialog();
   } catch (error) {
     console.log(error);

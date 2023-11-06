@@ -207,11 +207,11 @@ export default {
 
       switch (type) {
         case "edit":
-          this.isModalEditOpen = !this.isModalEditOpen;
+          this.$emit("edit", object.id);
           break;
         case "delete":
           this.isModalDeleteOpen = !this.isModalDeleteOpen;
-          this.$emit("delete", object);
+          this.$emit("delete", object.id);
           break;
         case "info":
           this.isModalInfoOpen = !this.isModalInfoOpen;
