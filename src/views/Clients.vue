@@ -9,6 +9,7 @@
     :modalDelete="modalDelete"
     :modalInfo="modalInfo"
     @openManage="handleManage"
+    @delete="callDelete"
     @edit="callEdit"
     :page="currentPage"
     :lastPage="lastPage"
@@ -22,10 +23,11 @@
 <script setup>
 import ViewBase from "@/components/ViewBase.vue";
 import ManageClient from "@/components/modal/manage/ManageClient.vue";
-
 import ClientService from "@/service/clientService.js";
+import clientComp from "@/compositionAPI/clientComp";
 import { ref } from "vue";
 
+const { appStore } = clientComp();
 const clientService = new ClientService();
 const index = ref(0);
 const id = ref(null);
@@ -78,6 +80,27 @@ function handleManage(e) {
 function callEdit(e) {
   id.value = e;
   dialog.value = !dialog.value;
+}
+
+function callDelete(e) {
+  try {
+    if (e) {
+      clientService.delete(e);
+      appStore.changeDialog({
+        color: "green",
+        message: `Item ${e} deletado com sucesso !`,
+        show: true,
+      });
+      clients.values = clients.filter((i) => i.id !== e);
+    }
+  } catch (error) {
+    appStore.changeDialog({
+      color: "red",
+      message: error,
+      show: true,
+    });
+    console.error(error);
+  }
 }
 
 function fetchClients(page = 1, c = 10) {

@@ -194,6 +194,7 @@ export default {
       isModalDeleteOpen: false,
       isModalInfoOpen: false,
       selectedObject: {},
+      idDelete: null,
       filterText: "",
       deleteBase: {
         message: "Deseja realmente deletar esse registro ?",
@@ -211,15 +212,19 @@ export default {
           break;
         case "delete":
           this.isModalDeleteOpen = !this.isModalDeleteOpen;
-          this.$emit("delete", object.id);
+          this.idDelete = object.id;
           break;
         case "info":
           this.isModalInfoOpen = !this.isModalInfoOpen;
           break;
       }
     },
+
     responseFromModal(event) {
-      this.$emit("response", event);
+      if (event) {
+        this.$emit("delete", this.idDelete);
+      }
+      this.idDelete = null;
     },
 
     openManage() {
