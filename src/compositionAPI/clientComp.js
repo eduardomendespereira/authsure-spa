@@ -5,6 +5,7 @@ export default function clientComp() {
   const realmService = new RealmService();
   const clientService = new ClientService();
   const realms = ref([]);
+
   const client = ref({
     id: null,
     name: null,

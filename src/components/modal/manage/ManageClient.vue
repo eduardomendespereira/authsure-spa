@@ -99,7 +99,9 @@ import clientComp from "@/compositionAPI/clientComp";
 
 const { client, sendPayload, realmList, realms, fetchRealms, getClient } =
   clientComp();
+
 const form = ref(null);
+
 const props = defineProps({
   dialog: Boolean,
   id: Number,
