@@ -1,9 +1,11 @@
 import { ref } from "vue";
 import RealmService from "@/service/realmService.js";
 import ClientService from "@/service/clientService";
+import { useAppStore } from "@/store/app";
 export default function clientComp() {
   const realmService = new RealmService();
   const clientService = new ClientService();
+  const appStore = useAppStore();
   const realms = ref([]);
 
   const client = ref({
@@ -25,6 +27,11 @@ export default function clientComp() {
     console.log(update);
     if (update) clientService.updateClient(client.value);
     else clientService.insert(client.value);
+    appStore.changeDialog({
+      color: "green",
+      message: "Item Registrado com sucesso!",
+      show: true,
+    });
   }
   function fetchRealms(page = 1, c = 40) {
     realmService.realms(page, c).then((data) => {
