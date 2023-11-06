@@ -8,7 +8,10 @@
     :modalEdit="modalEdit"
     :modalDelete="modalDelete"
     :modalInfo="modalInfo"
+    :page="currentPage"
+    :lastPage="lastPage"
     :key="index"
+    @paginate="fetchRoles"
   />
 </template>
 
@@ -19,6 +22,8 @@ import { ref } from "vue";
 
 const roleservice = new Roleservice();
 const index = ref(0);
+const currentPage = ref(1);
+const lastPage = ref(1);
 let roles = [];
 
 const modalEdit = {
@@ -35,8 +40,14 @@ const modalInfo = {
   keys: ["id", "name", "created_at", "updated_at"],
 };
 
-roleservice.roles().then((data) => {
-  roles = data;
-  index.value++;
-});
+function fetchRoles(page=1, c=10) {
+  roleservice.roles(page, c).then((data) => {
+    roles = data.roles;
+    currentPage.value = page;
+    lastPage.value = data.last_page;
+    index.value++;
+  });
+}
+
+fetchRoles();
 </script>

@@ -1,6 +1,4 @@
 import axios from "axios";
-import store from "@/store/index";
-import getAuth from "@/utils/auth";
 
 function verifyURL() {
   const hostname = window.location.hostname;
@@ -25,72 +23,57 @@ const http = axios.create({
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
-    "Authorization": "Bearer " + getAuth().access
   },
 });
 
-// function handlingError(error) {
-//   try {
-//     // const info = i18n.t('services.networkError')
-//     const info = 'Erro de conexão com o servidor.'
-//     let response,
-//       message = null
+http.interceptors.request.use(async function (config) {
+  const authUser = JSON.parse(localStorage.getItem("auth"));
+  if (authUser) {
+    const token = `Bearer ${authUser.access || ""}`;
+    config.headers.Authorization = token;
+  }
+  return config;
+});
+http.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  async function (error) {
+    let originalRequest = error && error.config ? error.config : null;
+    const errorStatus = error && error.response ? error.response.status : null;
+    const errorDetail =
+      error && error.response.data.detail ? error.response.data.detail : null;
 
-//     if (error.code == 'ERR_NETWORK') response = info
-//     else if (error.response) response = error.response
-//     else if (error.message) response = error.message
-//     else response = error
-
-//     if (response && response.data && response.data != undefined) {
-//       if (response.status == 422) {
-//         // message = i18n.t('login.corrigir') + '<br>'
-//         message = 'Corrigir login'
-//         Object.keys(response.data.error).forEach((key) => {
-//           message += response.data.error[key] + '<br>'
-//         })
-//       } else {
-//         if (response.data.error) {
-//           if (response.data.error.message)
-//             message =
-//               response.data.error.error + ' ' + response.data.error.message
-//           else message = response.data.error
-//         } else {
-//           message =
-//             response.status + ' ' + response.statusText + '<br>' + error404()
-//         }
-//       }
-//     } else {
-//       message =
-//         response == 'Sessão expirada!'
-//           ? i18n.t('services.sessionExpired')
-//           : info
-//     }
-//     return Promise.reject(message)
-//   } catch (error) {
-//     console.error('handl', error)
-//   }
-// }
-
-// http.interceptors.request.use(async function (config) {
-//   const adminContext = store.state.adminModule.adminContext
-
-//   let authUser = null
-//   if (adminContext == 'Admin')
-//     authUser = store.state.authAdminModule.authAdminUser
-//   else authUser = store.state.authModule.authUser
-
-//   const filialAdmin = store.state.adminModule.selectedFilial
-//   const filial = store.state.systemModule.system?.CODIGO ?? filialAdmin ?? 1
-
-//   if (authUser) {
-//     const token = `Bearer ${authUser.access_token || ''}`
-//     config.headers.Authorization = token
-//   }
-
-//   config.headers.filial = filial
-
-//   return config
-// })
+    if (originalRequest.data) {
+      const data = JSON.parse(originalRequest.data);
+      if (data.first) {
+        localStorage.removeItem("auth");
+        return error;
+      }
+    }
+    if (
+      errorStatus == 401 &&
+      errorDetail == "Invalid token" &&
+      !originalRequest.first
+    ) {
+      console.log("exception");
+      try {
+        let useStore = JSON.parse(localStorage.getItem("auth"));
+        useStore.first = true;
+        const { data } = await refresh(useStore);
+        if (data) {
+          originalRequest.headers.Authorization = "Bearer " + data.access;
+          return axios(originalRequest);
+        }
+      } catch (error) {
+        console.log(error);
+        originalRequest.first = true;
+        return axios(originalRequest);
+      }
+    }
+    return error;
+  }
+);
 
 // http.interceptors.response.use(
 //   (response) => {
@@ -158,9 +141,13 @@ const http = axios.create({
 //   return await http.post('/mbcommerce/auth-company/refresh')
 // }
 
-// async function refreshAdminAccessToken() {
-//   return await http.post('/mbcommerce/auth/refresh')
-// }
+async function refresh(payload) {
+  return await http.post("/auth/refresh", payload);
+}
+async function logOut(payload) {
+  localStorage.removeItem("auth");
+  return await http.post("/auth/logout", payload);
+}
 
 // function error404() {
 //   return 'Ooops... nada por aqui'

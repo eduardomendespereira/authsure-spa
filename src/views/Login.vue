@@ -51,10 +51,16 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref ,onMounted } from "vue";
 import userComp from "../compositionAPI/userComp";
 import { useRouter } from "vue-router";
 import getAuth from "@/utils/auth";
+
+
+
+onMounted(()=>{
+  console.log('mounted')
+})
 
 const loginPayload = ref({
   username: "",

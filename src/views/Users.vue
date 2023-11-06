@@ -8,7 +8,10 @@
     :modalEdit="modalEdit"
     :modalDelete="modalDelete"
     :modalInfo="modalInfo"
+    :page="currentPage"
+    :lastPage="lastPage"
     :key="index"
+    @paginate="fetchUsers"
   />
 </template>
 
@@ -19,6 +22,8 @@ import { ref } from "vue";
 
 const userService = new UserService();
 const index = ref(0);
+const currentPage = ref(1);
+const lastPage = ref(1);
 let users = [];
 
 const modalEdit = {
@@ -35,8 +40,14 @@ const modalInfo = {
   keys: ["id", "username", "email", "realm_id", "created_at", "updated_at"],
 };
 
-userService.users().then((data) => {
-  users = data;
-  index.value++;
-});
+function fetchUsers(page=1, c=10) {
+  userService.users(page, c).then((data) => {
+    users = data.users;
+    currentPage.value = page
+    lastPage.value = data.last_page;
+    index.value++;
+  });
+}
+
+fetchUsers();
 </script>

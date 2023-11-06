@@ -4,12 +4,22 @@ class AuthService extends Service {
   constructor() {
     super();
 
-    this.resource = "auth/login";
+    this.resource = "auth/";
   }
 
   async login(payload) {
-    const requestUrl = this.resource;
-    return await this.insert(payload);
+    const requestUrl = this.resource + "login";
+    return await this._http.post(requestUrl, payload);
+  }
+
+  async refresh(payload) {
+    const requestUrl = this.resource + "refresh";
+    return await this._http.post(requestUrl, payload);
+  }
+
+  async logOut(payload) {
+    const requestUrl = this.resource + "logOut";
+    return await this._http.post(requestUrl, payload);
   }
 }
 
