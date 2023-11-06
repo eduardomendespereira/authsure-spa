@@ -12,7 +12,7 @@
         <span>Realize o registro do cliente.</span>
       </v-card-subtitle>
       <v-card-text>
-        <v-form ref="form">
+        <v-form ref="form" @submit.prevent="save">
           <v-row>
             <v-col cols="6" v-if="props.id">
               <v-text-field
@@ -27,6 +27,7 @@
             </v-col>
             <v-col cols="6">
               <v-text-field
+                :rules="clientRules.required"
                 :placeholder="'Nome'"
                 :label="'Nome'"
                 required
@@ -40,6 +41,7 @@
                 :placeholder="'Descrição'"
                 :label="'Descrição'"
                 variant="underlined"
+                :rules="clientRules.required"
                 required
                 v-model="client.description"
               >
@@ -50,6 +52,7 @@
                 :placeholder="'Key'"
                 :label="'Key'"
                 variant="underlined"
+                :rules="clientRules.required"
                 required
                 v-model="client.key"
               >
@@ -60,6 +63,7 @@
                 :placeholder="'Secret'"
                 :label="'Secret'"
                 variant="underlined"
+                :rules="clientRules.required"
                 required
                 v-model="client.secret"
               >
@@ -70,6 +74,7 @@
                 item-title="name"
                 item-value="id"
                 return-object
+                :rules="clientRules.required"
                 v-model="client.realm_id"
                 :label="'Id reino'"
                 :items="realms"
@@ -78,16 +83,16 @@
               </v-select>
             </v-col>
           </v-row>
+          <v-card-actions>
+            <v-row>
+              <v-col cols="12" class="d-flex justify-end">
+                <v-btn variant="text" type="submit"> Salvar </v-btn>
+                <v-btn variant="text" @click="closeDialog"> Fechar </v-btn>
+              </v-col>
+            </v-row>
+          </v-card-actions>
         </v-form>
       </v-card-text>
-      <v-card-actions>
-        <v-row>
-          <v-col cols="12" class="d-flex justify-end">
-            <v-btn variant="text" @click="save"> Salvar </v-btn>
-            <v-btn variant="text" @click="closeDialog"> Fechar </v-btn>
-          </v-col>
-        </v-row>
-      </v-card-actions>
     </v-card>
   </ModalBase>
 </template>
@@ -97,8 +102,15 @@ import ModalBase from "@/components/modal/ModalBase.vue";
 import { ref, onMounted } from "vue";
 import clientComp from "@/compositionAPI/clientComp";
 
-const { client, sendPayload, realmList, realms, fetchRealms, getClient } =
-  clientComp();
+const {
+  client,
+  sendPayload,
+  realmList,
+  realms,
+  fetchRealms,
+  getClient,
+  appStore,
+} = clientComp();
 
 const form = ref(null);
 
@@ -106,6 +118,10 @@ const props = defineProps({
   dialog: Boolean,
   id: Number,
 });
+
+const clientRules = {
+  required: [(v) => !!v || "Campo obrigatorio"],
+};
 
 const emit = defineEmits("close");
 
@@ -126,12 +142,32 @@ function closeDialog() {
   emit("close", false);
 }
 
-function save() {
+async function save() {
+  const validated = await form.value.validate();
   try {
-    sendPayload(props.id ? props.id : false);
-    closeDialog();
+    if (validated.valid) {
+      sendPayload(props.id ? props.id : false);
+      closeDialog();
+      const action = props.id ? "alterado" : "registrado";
+      appStore.changeDialog({
+        color: "green",
+        message: `Item ${action} com sucesso!`,
+        show: true,
+      });
+    } else {
+      appStore.changeDialog({
+        color: "red",
+        message: "Preencha os campos!",
+        show: true,
+      });
+    }
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    appStore.changeDialog({
+      color: "red",
+      message: error,
+      show: true,
+    });
   }
 }
 </script>

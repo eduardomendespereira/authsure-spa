@@ -20,18 +20,16 @@ export default function clientComp() {
   const realmList = ref(null);
   const currentPg = ref(1);
   const lastPg = ref(0);
-  function sendPayload(update = false) {
-    client.value.realm_id = client.value.realm_id
-      ? client.value.realm_id.id
-      : null;
-    console.log(update);
-    if (update) clientService.updateClient(client.value);
-    else clientService.insert(client.value);
-    appStore.changeDialog({
-      color: "green",
-      message: "Item Registrado com sucesso!",
-      show: true,
-    });
+  async function sendPayload(update = false) {
+    try {
+      client.value.realm_id = client.value.realm_id
+        ? client.value.realm_id.id
+        : null;
+      if (update) await clientService.updateClient(client.value);
+      else await clientService.insert(client.value);
+    } catch (error) {
+      console.error(error);
+    }
   }
   function fetchRealms(page = 1, c = 40) {
     realmService.realms(page, c).then((data) => {
@@ -61,5 +59,6 @@ export default function clientComp() {
     realms,
     currentPg,
     lastPg,
+    appStore,
   };
 }

@@ -9,7 +9,7 @@
       {{ appStore.dialogBaseInfo.message }}
       <template v-slot:actions>
         <v-btn
-          color="red"
+          color="black"
           variant="text"
           @click="appStore.dialogBaseInfo.show = false"
         >
