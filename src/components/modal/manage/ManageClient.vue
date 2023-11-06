@@ -58,6 +58,8 @@
               <v-select
                 item-title="name"
                 item-value="id"
+                return-object
+                v-model="client.realm_id"
                 :label="'Id reino'"
                 :items="realms"
                 variant="underlined"
@@ -70,7 +72,7 @@
       <v-card-actions>
         <v-row>
           <v-col cols="12" class="d-flex justify-end">
-            <v-btn variant="text"> Salvar </v-btn>
+            <v-btn variant="text" @click="save"> Salvar </v-btn>
             <v-btn variant="text" @click="closeDialog"> Fechar </v-btn>
           </v-col>
         </v-row>
@@ -91,6 +93,8 @@ const props = defineProps({
   dialog: Boolean,
   id: Number,
 });
+const currentPg = ref(1);
+const lastPg = ref(0);
 const realms = ref([]);
 const realmService = new RealmService();
 const emit = defineEmits("close");
@@ -111,9 +115,15 @@ function closeDialog() {
   emit("close", false);
 }
 
-function fetchRealms(page = 1, c = 10) {
+function save() {
+  console.log(client.value.realm_id);
+}
+
+function fetchRealms(page = 1, c = 40) {
   realmService.realms(page, c).then((data) => {
     realms.value = data.realms;
+    currentPg.value = page;
+    lastPg.value = data.last_page;
   });
 }
 </script>
