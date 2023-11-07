@@ -8,11 +8,15 @@
         :modalEdit="modalEdit"
         :modalDelete="modalDelete"
         :modalInfo="modalInfo"
+        @openManage="handleManage"
+        @edit="callEdit"
         :page="currentPage"
         :lastPage="lastPage"
         :key="index"
         @paginate="fetchSessions"
     />
+    <ManageSession v-if="dialog" :dialog="dialog" :id="id" @close="closeDialog">
+    </ManageSession>
 </template>
 
 
@@ -20,12 +24,18 @@
 import ViewBase from "@/components/ViewBase.vue";
 import SessionService from "@/service/sessionService.js";
 import { ref } from "vue";
+import sessionComp from "@/compositionAPI/sessionComp";
+import ManageSession from "@/components/modal/manage/ManageSession.vue";
 
+const { appStore } = sessionComp();
 const sessionService = new SessionService();
 const index = ref(0);
+const id = ref(null);
 const currentPage = ref(1);
 const lastPage = ref(1);
 let sessions = [];
+
+const dialog = ref(false);
 
 const modalEdit = {
   title: "Editar Sessão",
@@ -40,6 +50,41 @@ const modalInfo = {
   labels: ["Id", "Ativa", "Usuário", "Token", "Criada em", "Atualizada em"],
   keys: ["id", "is_active", "user_id", "token", "created_at", "updated_at"],
 };
+
+
+function closeDialog(e) {
+  dialog.value = false;
+  id.value = null;
+}
+
+function handleManage(e) {
+  dialog.value = e;
+}
+function callEdit(e) {
+  id.value = e;
+  dialog.value = !dialog.value;
+}
+
+function callDelete(e) {
+  try {
+    if (e) {
+      sessionService.delete(e);
+      appStore.changeDialog({
+        color: "green",
+        message: `Item ${e} deletado com sucesso !`,
+        show: true,
+      });
+      sessions.values = session.filter((i) => i.id !== e);
+    }
+  } catch (error) {
+    appStore.changeDialog({
+      color: "red",
+      message: error,
+      show: true,
+    });
+    console.error(error);
+  }
+}
 
 function fetchSessions(page=1, c=10) {
   sessionService.sessions(page, c).then((data) => {
