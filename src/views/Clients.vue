@@ -16,7 +16,12 @@
     :key="index"
     @paginate="fetchClients"
   />
-  <ManageClient v-if="dialog" :dialog="dialog" :id="id" @close="closeDialog">
+  <ManageClient
+    v-if="dialog"
+    :dialog="dialog"
+    :object="object"
+    @close="closeDialog"
+  >
   </ManageClient>
 </template>
 
@@ -30,7 +35,7 @@ import { ref } from "vue";
 const { appStore } = clientComp();
 const clientService = new ClientService();
 const index = ref(0);
-const id = ref(null);
+const object = ref(null);
 const currentPage = ref(1);
 const lastPage = ref(1);
 let clients = [];
@@ -71,14 +76,14 @@ const modalInfo = {
 
 function closeDialog(e) {
   dialog.value = false;
-  id.value = null;
+  object.value = null;
 }
 
 function handleManage(e) {
   dialog.value = e;
 }
 function callEdit(e) {
-  id.value = e;
+  object.value = { ...e };
   dialog.value = !dialog.value;
 }
 

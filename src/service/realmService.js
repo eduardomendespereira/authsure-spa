@@ -11,6 +11,9 @@ class RealmService extends Service {
     const requestUrl = this.resource;
     return await this.getAPI(requestUrl, page, c);
   }
+  async updateRealm(payload) {
+    return await this.update(payload, payload.id);
+  }
 }
 
 export default RealmService;

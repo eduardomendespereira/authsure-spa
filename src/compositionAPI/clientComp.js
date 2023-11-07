@@ -42,9 +42,6 @@ export default function clientComp() {
     try {
       const { data } = await clientService.getClient(id);
       client.value = { ...data };
-      client.value.realm_id = realms.value.find(
-        (i) => i.id == client.value.realm_id
-      );
     } catch (error) {
       console.error(error);
     }

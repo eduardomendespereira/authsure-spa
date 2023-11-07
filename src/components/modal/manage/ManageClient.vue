@@ -14,7 +14,7 @@
       <v-card-text>
         <v-form ref="form" @submit.prevent="save">
           <v-row>
-            <v-col cols="6" v-if="props.id">
+            <v-col cols="6" v-if="props.object">
               <v-text-field
                 :placeholder="'Id'"
                 :label="'Id'"
@@ -99,7 +99,7 @@
 
 <script setup>
 import ModalBase from "@/components/modal/ModalBase.vue";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import clientComp from "@/compositionAPI/clientComp";
 
 const {
@@ -116,22 +116,30 @@ const form = ref(null);
 
 const props = defineProps({
   dialog: Boolean,
-  id: Number,
+  object: Object,
 });
 
 const clientRules = {
   required: [(v) => !!v || "Campo obrigatorio"],
 };
 
+watch(realms, (nw, old) => {
+  if (nw && nw.length > 0) {
+    client.value.realm_id = realms.value.find(
+      (i) => i.id == client.value.realm_id
+    );
+  }
+});
+
 const emit = defineEmits("close");
 
-onMounted(async () => {
+onMounted(() => {
   try {
     fetchRealms();
-    if (!props.id) {
-      console.log(props.id);
+    if (!props.object) {
     } else {
-      getClient(props.id);
+      client.value = { ...props.object };
+      console.log(client.value);
     }
   } catch (error) {
     console.error(error);
@@ -146,9 +154,9 @@ async function save() {
   const validated = await form.value.validate();
   try {
     if (validated.valid) {
-      sendPayload(props.id ? props.id : false);
+      sendPayload(props.object ? props.object : false);
       closeDialog();
-      const action = props.id ? "alterado" : "registrado";
+      const action = props.object ? "alterado" : "registrado";
       appStore.changeDialog({
         color: "green",
         message: `Item ${action} com sucesso!`,
