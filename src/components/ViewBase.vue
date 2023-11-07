@@ -208,7 +208,7 @@ export default {
 
       switch (type) {
         case "edit":
-          this.$emit("edit", object.id);
+          this.$emit("edit", object);
           break;
         case "delete":
           this.isModalDeleteOpen = !this.isModalDeleteOpen;
@@ -222,6 +222,7 @@ export default {
 
     responseFromModal(event) {
       if (event) {
+        console.log(event);
         this.$emit("delete", this.idDelete);
       }
       this.idDelete = null;

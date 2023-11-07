@@ -11,6 +11,7 @@
     :page="currentPage"
     :lastPage="lastPage"
     :key="index"
+    @delete="callDelete"
     @paginate="fetchRealms"
   />
 </template>
@@ -18,6 +19,7 @@
 <script setup>
 import ViewBase from "@/components/ViewBase.vue";
 import RealmService from "@/service/realmService.js";
+
 import { ref } from "vue";
 
 const realmService = new RealmService();
@@ -40,13 +42,24 @@ const modalInfo = {
   keys: ["id", "name", "created_at", "updated_at"],
 };
 
-function fetchRealms(page=1, c=10) {
+function fetchRealms(page = 1, c = 10) {
   realmService.realms(page, c).then((data) => {
     realms = data.realms;
-    currentPage.value = page
+    currentPage.value = page;
     lastPage.value = data.last_page;
     index.value++;
   });
+}
+
+function callDelete(e) {
+  console.log(e);
+  try {
+    if (e) {
+      realmService.delete(e);
+    }
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 fetchRealms();
