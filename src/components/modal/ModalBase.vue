@@ -1,5 +1,10 @@
 <template>
-  <v-dialog v-model="dialog" max-width="800" @click:outside="closeModal">
+  <v-dialog
+    v-model="dialog"
+    max-width="800"
+    @click:outside="closeModal"
+    :persistent="needsClose ? false : true"
+  >
     <v-card v-if="needsClose">
       <v-card-title>
         {{ title }}
@@ -7,7 +12,7 @@
       <v-card-text>
         <slot></slot>
       </v-card-text>
-      <v-card-actions>
+      <v-card-actions class="d-flex justify-end">
         <v-btn @click="closeModal">Fechar</v-btn>
       </v-card-actions>
     </v-card>
@@ -43,6 +48,7 @@ export default {
   },
   methods: {
     closeModal() {
+      console.log("aa Close Modal");
       this.$emit("closeModal");
     },
   },

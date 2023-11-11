@@ -1,24 +1,28 @@
 <template>
-    <ViewBase
-        title="Sessões"
-        createTitle="Nova Sessão"
-        :objects="sessions"
-        :labels="['Id', 'Ativa']"
-        :keys="['id', 'is_active']"
-        :modalEdit="modalEdit"
-        :modalDelete="modalDelete"
-        :modalInfo="modalInfo"
-        @openManage="handleManage"
-        @edit="callEdit"
-        :page="currentPage"
-        :lastPage="lastPage"
-        :key="index"
-        @paginate="fetchSessions"
-    />
-    <ManageSession v-if="dialog" :dialog="dialog" :id="id" @close="closeDialog">
-    </ManageSession>
+  <ViewBase
+    title="Sessões"
+    createTitle="Nova Sessão"
+    :objects="sessions"
+    :labels="['Id', 'Ativa']"
+    :keys="['id', 'is_active']"
+    :modalEdit="modalEdit"
+    :modalDelete="modalDelete"
+    :modalInfo="modalInfo"
+    @openManage="handleManage"
+    @edit="callEdit"
+    :page="currentPage"
+    :lastPage="lastPage"
+    :key="index"
+    @paginate="fetchSessions"
+  />
+  <ManageSession
+    v-if="dialog"
+    :dialog="dialog"
+    :object="object"
+    @close="closeDialog"
+  >
+  </ManageSession>
 </template>
-
 
 <script setup>
 import ViewBase from "@/components/ViewBase.vue";
@@ -30,7 +34,7 @@ import ManageSession from "@/components/modal/manage/ManageSession.vue";
 const { appStore } = sessionComp();
 const sessionService = new SessionService();
 const index = ref(0);
-const id = ref(null);
+const object = ref(null);
 const currentPage = ref(1);
 const lastPage = ref(1);
 let sessions = [];
@@ -51,17 +55,16 @@ const modalInfo = {
   keys: ["id", "is_active", "user_id", "token", "created_at", "updated_at"],
 };
 
-
 function closeDialog(e) {
   dialog.value = false;
-  id.value = null;
+  object.value = null;
 }
 
 function handleManage(e) {
   dialog.value = e;
 }
 function callEdit(e) {
-  id.value = e;
+  object.value = e;
   dialog.value = !dialog.value;
 }
 
@@ -86,10 +89,10 @@ function callDelete(e) {
   }
 }
 
-function fetchSessions(page=1, c=10) {
+function fetchSessions(page = 1, c = 10) {
   sessionService.sessions(page, c).then((data) => {
     sessions = data.sessions;
-    currentPage.value = page
+    currentPage.value = page;
     lastPage.value = data.last_page;
     index.value++;
   });

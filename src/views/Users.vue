@@ -11,14 +11,52 @@
     :page="currentPage"
     :lastPage="lastPage"
     :key="index"
+    @openManage="handleManage"
+    @edit="callEdit"
+    @delete="callDelete"
     @paginate="fetchUsers"
   />
+  <ManageUser
+    v-if="dialog"
+    :dialog="dialog"
+    :object="object"
+    @close="closeDialog"
+  ></ManageUser>
 </template>
 
 <script setup>
 import ViewBase from "@/components/ViewBase.vue";
+import ManageUser from "@/components/modal/manage/ManageUser.vue";
 import UserService from "@/service/userService.js";
-import { ref } from "vue";
+import { ref, watch } from "vue";
+
+const object = ref(null);
+const dialog = ref(false);
+const attTable = ref(null);
+
+function callEdit(e) {
+  object.value = e;
+  dialog.value = true;
+}
+function closeDialog(e) {
+  dialog.value = false;
+  object.value = null;
+  fetchUsers();
+}
+function handleManage(e) {
+  dialog.value = e;
+}
+function callDelete(e) {
+  console.log(e);
+  try {
+    if (e) {
+      roleservice.delete(e);
+      fetchUsers();
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 const userService = new UserService();
 const index = ref(0);
@@ -26,6 +64,11 @@ const currentPage = ref(1);
 const lastPage = ref(1);
 let users = [];
 
+watch(users, () => {
+  if (attTable != null) {
+    attTable.value = attTable.value == 1 ? 2 : 1;
+  }
+});
 const modalEdit = {
   title: "Editar Usuário",
 };
@@ -36,17 +79,25 @@ const modalDelete = {
 
 const modalInfo = {
   title: "Informações do Usuário",
-  labels: ["Id", "Nome de usuário", "Email", "Reino", "Criado em", "Atualizado em"],
+  labels: [
+    "Id",
+    "Nome de usuário",
+    "Email",
+    "Reino",
+    "Criado em",
+    "Atualizado em",
+  ],
   keys: ["id", "username", "email", "realm_id", "created_at", "updated_at"],
 };
 
-function fetchUsers(page=1, c=10) {
+function fetchUsers(page = 1, c = 10) {
   userService.users(page, c).then((data) => {
     users = data.users;
-    currentPage.value = page
+    currentPage.value = page;
     lastPage.value = data.last_page;
     index.value++;
   });
+  attTable.value = 1;
 }
 
 fetchUsers();

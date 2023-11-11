@@ -204,6 +204,7 @@ export default {
   },
   methods: {
     handleModal(type, object) {
+      console.log('aa')
       this.selectedObject = object;
 
       switch (type) {

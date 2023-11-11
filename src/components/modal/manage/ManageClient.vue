@@ -102,15 +102,8 @@ import ModalBase from "@/components/modal/ModalBase.vue";
 import { ref, onMounted, watch } from "vue";
 import clientComp from "@/compositionAPI/clientComp";
 
-const {
-  client,
-  sendPayload,
-  realmList,
-  realms,
-  fetchRealms,
-  getClient,
-  appStore,
-} = clientComp();
+const { client, sendPayload, realms, fetchRealms, getClient, appStore } =
+  clientComp();
 
 const form = ref(null);
 
@@ -138,8 +131,7 @@ onMounted(() => {
     fetchRealms();
     if (!props.object) {
     } else {
-      client.value = { ...props.object };
-      console.log(client.value);
+      getClient(props.object.id);
     }
   } catch (error) {
     console.error(error);

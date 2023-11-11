@@ -2,22 +2,22 @@
   <ModalBase :isOpen="dialog" :title="'Registro de Reino'" :needsClose="false">
     <v-card>
       <v-card-title>
-        <span class="text-h6"> Registro de Reino </span>
+        <span class="text-h6"> Registro de Cargo </span>
       </v-card-title>
       <v-card-subtitle>
-        <span>Realize o registro do reino.</span>
+        <span>Realize o registro de cargo.</span>
       </v-card-subtitle>
       <v-card-text>
         <v-form ref="form" @submit.prevent="save">
           <v-row>
             <v-col :cols="'12'">
               <v-text-field
-                :rules="realmRules.required"
+                :rules="rolesRules.required"
                 :placeholder="'Nome'"
                 :label="'Nome'"
                 required
                 variant="underlined"
-                v-model="realm.name"
+                v-model="role.name"
               >
               </v-text-field>
             </v-col>
@@ -38,9 +38,9 @@
 
 <script setup>
 import ModalBase from "@/components/modal/ModalBase.vue";
-import realComp from "@/compositionAPI/realmComp";
+import roleComp from "@/compositionAPI/roleComp";
 
-const { realm, sendPayload, appStore } = realComp();
+const { role, sendPayload, appStore } = roleComp();
 import { ref, onMounted } from "vue";
 const form = ref(null);
 
@@ -49,13 +49,13 @@ const props = defineProps({
   object: Object,
 });
 
-const realmRules = {
+const rolesRules = {
   required: [(v) => !!v || "Campo obrigatorio"],
 };
 
 onMounted(() => {
   if (props.object) {
-    realm.value = { ...props.object };
+    role.value = { ...props.object };
   }
 });
 
@@ -73,7 +73,7 @@ async function save() {
       const action = props.object ? "alterado" : "registrado";
       appStore.changeDialog({
         color: "green",
-        message: `Reino ${action} com sucesso!`,
+        message: `Cargo ${action} com sucesso!`,
         show: true,
       });
     } else {
