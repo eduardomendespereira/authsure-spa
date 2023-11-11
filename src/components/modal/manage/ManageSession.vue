@@ -108,7 +108,7 @@ async function save() {
       const action = props.object ? "alterado" : "registrado";
       appStore.changeDialog({
         color: "green",
-        message: `Item ${action} com sucesso!`,
+        message: `Sessão ${action} com sucesso!`,
         show: true,
       });
     } else {

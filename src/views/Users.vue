@@ -34,10 +34,18 @@ const object = ref(null);
 const dialog = ref(false);
 const attTable = ref(null);
 
-function callEdit(e) {
-  object.value = e;
-  dialog.value = true;
-}
+const userService = new UserService();
+const index = ref(0);
+const currentPage = ref(1);
+const lastPage = ref(1);
+let users = [];
+
+watch(users, () => {
+  if (attTable != null) {
+    attTable.value = attTable.value == 1 ? 2 : 1;
+  }
+});
+
 function closeDialog(e) {
   dialog.value = false;
   object.value = null;
@@ -50,25 +58,18 @@ function callDelete(e) {
   console.log(e);
   try {
     if (e) {
-      roleservice.delete(e);
+      userService.delete(e);
       fetchUsers();
     }
   } catch (error) {
     console.error(error);
   }
 }
+function callEdit(e) {
+  object.value = e;
+  dialog.value = true;
+}
 
-const userService = new UserService();
-const index = ref(0);
-const currentPage = ref(1);
-const lastPage = ref(1);
-let users = [];
-
-watch(users, () => {
-  if (attTable != null) {
-    attTable.value = attTable.value == 1 ? 2 : 1;
-  }
-});
 const modalEdit = {
   title: "Editar Usuário",
 };
