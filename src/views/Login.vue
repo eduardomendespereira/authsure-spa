@@ -75,7 +75,7 @@ async function goLogin() {
   try {
     const validated = await form.value.validate();
     if (!validated.valid) return;
-    await login(loginPayload.value);
+    await login({ ...loginPayload.value, key: import.meta.env.VITE_CLIENT_KEY, secret: import.meta.env.VITE_CLIENT_SECRET });
   } catch (er) {
     throw er
   }

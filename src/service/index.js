@@ -13,9 +13,9 @@ function verifyURL() {
     (arrHostname[0] == 172 && arrHostname[1] >= 16 && arrHostname[1] < 32) ||
     (arrHostname[0] == 192 && arrHostname[1] == 168)
   )
-    return process.env.VUE_APP_BASEURL || "http://localhost:8000/api/";
+    return import.meta.env.VITE_API_URL || "http://localhost:8000/api/";
 
-  return process.env.VUE_APP_BASEURL_EXTERNAL;
+  return import.meta.env.VITE_API_URL;
 }
 
 const http = axios.create({
