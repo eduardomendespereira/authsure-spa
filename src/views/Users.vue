@@ -81,7 +81,9 @@ const modalInfo = {
 };
 
 function fetchUsers(page = 1, c = 10) {
-  userService.users(page, c).then((data) => {
+  const realm = "AuthSure";
+  const query = {page, c, realm}
+  userService.users(query).then((data) => {
     users.value = data.users;
     currentPage.value = page;
     lastPage.value = data.last_page;

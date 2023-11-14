@@ -74,7 +74,9 @@ const modalInfo = {
 };
 
 function fetchGroups(page = 1, c = 10) {
-  groupService.groups(page, c).then((data) => {
+  const realm = "AuthSure";
+  const query = {page, c, realm}
+  groupService.groups(query).then((data) => {
     groups.value = data.groups;
     currentPage.value = page;
     lastPage.value = data.last_page;

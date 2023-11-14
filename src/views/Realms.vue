@@ -57,7 +57,8 @@ const modalInfo = {
 };
 
 function fetchRealms(page = 1, c = 10) {
-  realmService.realms(page, c).then((data) => {
+  const query = {page, c}
+  realmService.realms(query).then((data) => {
     realms.value = data.realms;
     currentPage.value = page;
     lastPage.value = data.last_page;

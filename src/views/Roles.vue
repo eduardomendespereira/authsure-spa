@@ -77,8 +77,9 @@ const modalInfo = {
 };
 
 function fetchRoles(page = 1, c = 10) {
-  console.log("Fetch");
-  roleservice.roles(page, c).then((data) => {
+  const realm = "AuthSure";
+  const query = {page, c, realm}
+  roleservice.roles(query).then((data) => {
     roles.value = data.roles;
     currentPage.value = page;
     lastPage.value = data.last_page;

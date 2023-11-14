@@ -86,7 +86,9 @@ function callDelete(e) {
 }
 
 function fetchSessions(page = 1, c = 10) {
-  sessionService.sessions(page, c).then((data) => {
+  const realm = "AuthSure";
+  const query = {page, c, realm}
+  sessionService.sessions(query).then((data) => {
     sessions.value = data.sessions;
     currentPage.value = page;
     lastPage.value = data.last_page;

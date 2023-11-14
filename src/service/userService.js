@@ -7,9 +7,9 @@ class UserService extends Service {
     this.resource = "/users";
   }
 
-  async users(page, c) {
-    const requestUrl = this.resource;
-    return await this.getAPI(requestUrl, page, c);
+  async users(query) {
+    const requestUrl = this.createRequestUrl(query, this.resource);
+    return await this.getAPI(requestUrl);
   }
 }
 

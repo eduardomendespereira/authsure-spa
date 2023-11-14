@@ -102,7 +102,9 @@ function callDelete(e) {
 }
 
 function fetchClients(page = 1, c = 10) {
-  clientService.clients(page, c).then((data) => {
+  const realm = "AuthSure";
+  const query = {page, c, realm}
+  clientService.clients(query).then((data) => {
     clients.value = data.clients;
     currentPage.value = page;
     lastPage.value = data.last_page;
