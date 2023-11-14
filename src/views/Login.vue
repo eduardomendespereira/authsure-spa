@@ -51,10 +51,16 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref ,onMounted } from "vue";
 import userComp from "../compositionAPI/userComp";
 import { useRouter } from "vue-router";
 import getAuth from "@/utils/auth";
+
+
+
+onMounted(()=>{
+  console.log('mounted')
+})
 
 const loginPayload = ref({
   username: "",
@@ -69,7 +75,7 @@ async function goLogin() {
   try {
     const validated = await form.value.validate();
     if (!validated.valid) return;
-    await login(loginPayload.value);
+    await login({ ...loginPayload.value, key: import.meta.env.VITE_CLIENT_KEY, secret: import.meta.env.VITE_CLIENT_SECRET });
   } catch (er) {
     throw er
   }

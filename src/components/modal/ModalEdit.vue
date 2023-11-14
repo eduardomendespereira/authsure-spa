@@ -26,6 +26,7 @@ export default {
             dialog: this.isOpen,
         };
     },
+    
     watch: {
         isOpen(value) {
             this.dialog = value;

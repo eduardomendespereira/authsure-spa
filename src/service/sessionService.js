@@ -7,9 +7,16 @@ class SessionService extends Service {
     this.resource = "/sessions";
   }
 
-  async sessions() {
-    const requestUrl = this.resource;
+  async sessions(query) {
+    const requestUrl = this.createRequestUrl(query, this.resource);
     return await this.getAPI(requestUrl);
+  }
+  async getSession(payload) {
+    const requestUrl = `${this.resource}/${payload}`;
+    return await this._http.get(requestUrl);
+  }
+  async updateSession(payload) {
+    return await this.update(payload, payload.id);
   }
 }
 
