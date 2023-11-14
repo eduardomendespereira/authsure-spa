@@ -31,16 +31,17 @@ import ManageClient from "@/components/modal/manage/ManageClient.vue";
 import ClientService from "@/service/clientService.js";
 import clientComp from "@/compositionAPI/clientComp";
 import { ref } from "vue";
+import baseComp from "@/compositionAPI/baseComp";
+
+const { object, dialog, handleManage, callEdit } = baseComp();
 
 const { appStore } = clientComp();
 const clientService = new ClientService();
 const index = ref(0);
-const object = ref(null);
+
 const currentPage = ref(1);
 const lastPage = ref(1);
-let clients = [];
-
-const dialog = ref(false);
+const clients = ref([]);
 
 const modalEdit = {
   title: "Editar Cliente",
@@ -79,14 +80,6 @@ function closeDialog(e) {
   object.value = null;
 }
 
-function handleManage(e) {
-  dialog.value = e;
-}
-function callEdit(e) {
-  object.value = { ...e };
-  dialog.value = !dialog.value;
-}
-
 function callDelete(e) {
   try {
     if (e) {
@@ -96,7 +89,7 @@ function callDelete(e) {
         message: `Item ${e} deletado com sucesso !`,
         show: true,
       });
-      clients.values = clients.filter((i) => i.id !== e);
+      clients.value = clients.value.filter((i) => i.id !== e);
     }
   } catch (error) {
     appStore.changeDialog({
@@ -110,7 +103,7 @@ function callDelete(e) {
 
 function fetchClients(page = 1, c = 10) {
   clientService.clients(page, c).then((data) => {
-    clients = data.clients;
+    clients.value = data.clients;
     currentPage.value = page;
     lastPage.value = data.last_page;
     index.value++;

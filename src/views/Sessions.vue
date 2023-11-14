@@ -10,6 +10,7 @@
     :modalInfo="modalInfo"
     @openManage="handleManage"
     @edit="callEdit"
+    @delete="callDelete"
     :page="currentPage"
     :lastPage="lastPage"
     :key="index"
@@ -27,19 +28,22 @@
 <script setup>
 import ViewBase from "@/components/ViewBase.vue";
 import SessionService from "@/service/sessionService.js";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import sessionComp from "@/compositionAPI/sessionComp";
 import ManageSession from "@/components/modal/manage/ManageSession.vue";
+import baseComp from "@/compositionAPI/baseComp";
+
+const { object, dialog, attTable, handleManage, callEdit } = baseComp();
 
 const { appStore } = sessionComp();
+
 const sessionService = new SessionService();
 const index = ref(0);
-const object = ref(null);
+
 const currentPage = ref(1);
 const lastPage = ref(1);
-let sessions = [];
+const sessions = ref([]);
 
-const dialog = ref(false);
 
 const modalEdit = {
   title: "Editar Sessão",
@@ -60,14 +64,6 @@ function closeDialog(e) {
   object.value = null;
 }
 
-function handleManage(e) {
-  dialog.value = e;
-}
-function callEdit(e) {
-  object.value = e;
-  dialog.value = !dialog.value;
-}
-
 function callDelete(e) {
   try {
     if (e) {
@@ -77,7 +73,7 @@ function callDelete(e) {
         message: `Item ${e} deletado com sucesso !`,
         show: true,
       });
-      sessions.values = session.filter((i) => i.id !== e);
+      sessions.value = sessions.value.filter((i) => i.id !== e);
     }
   } catch (error) {
     appStore.changeDialog({
@@ -91,11 +87,12 @@ function callDelete(e) {
 
 function fetchSessions(page = 1, c = 10) {
   sessionService.sessions(page, c).then((data) => {
-    sessions = data.sessions;
+    sessions.value = data.sessions;
     currentPage.value = page;
     lastPage.value = data.last_page;
     index.value++;
   });
+  attTable.value = 1;
 }
 
 fetchSessions();

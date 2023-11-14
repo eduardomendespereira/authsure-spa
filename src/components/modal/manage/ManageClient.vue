@@ -118,9 +118,11 @@ const clientRules = {
 
 watch(realms, (nw, old) => {
   if (nw && nw.length > 0) {
-    client.value.realm_id = realms.value.find(
-      (i) => i.id == client.value.realm_id
-    );
+    if (props.object) {
+      client.value.realm_id = realms.value.find(
+        (i) => i.id == client.value.realm_id
+      );
+    }
   }
 });
 

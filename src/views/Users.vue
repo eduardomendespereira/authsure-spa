@@ -29,45 +29,34 @@ import ViewBase from "@/components/ViewBase.vue";
 import ManageUser from "@/components/modal/manage/ManageUser.vue";
 import UserService from "@/service/userService.js";
 import { ref, watch } from "vue";
+import baseComp from "@/compositionAPI/baseComp";
 
-const object = ref(null);
-const dialog = ref(false);
-const attTable = ref(null);
+const { object, dialog, attTable, handleManage, callEdit } = baseComp();
 
 const userService = new UserService();
 const index = ref(0);
 const currentPage = ref(1);
 const lastPage = ref(1);
-let users = [];
+const users = ref([]);
 
-watch(users, () => {
-  if (attTable != null) {
-    attTable.value = attTable.value == 1 ? 2 : 1;
-  }
-});
+
 
 function closeDialog(e) {
   dialog.value = false;
   object.value = null;
   fetchUsers();
 }
-function handleManage(e) {
-  dialog.value = e;
-}
+
 function callDelete(e) {
   console.log(e);
   try {
     if (e) {
       userService.delete(e);
-      fetchUsers();
+      users.value = users.value.filter((i) => i.id !== e);
     }
   } catch (error) {
     console.error(error);
   }
-}
-function callEdit(e) {
-  object.value = e;
-  dialog.value = true;
 }
 
 const modalEdit = {
@@ -93,7 +82,7 @@ const modalInfo = {
 
 function fetchUsers(page = 1, c = 10) {
   userService.users(page, c).then((data) => {
-    users = data.users;
+    users.value = data.users;
     currentPage.value = page;
     lastPage.value = data.last_page;
     index.value++;

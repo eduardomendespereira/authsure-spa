@@ -31,17 +31,16 @@
 import ViewBase from "@/components/ViewBase.vue";
 import RealmService from "@/service/realmService.js";
 import ManageRealm from "@/components/modal/manage/ManageRealm.vue";
+import baseComp from "@/compositionAPI/baseComp";
 
+const { object, dialog, attTable, handleManage, callEdit } = baseComp();
 import { ref } from "vue";
 
 const realmService = new RealmService();
 const index = ref(0);
 const currentPage = ref(1);
-const object = ref(null);
-const dialog = ref(false);
-const attTable = ref(1);
 const lastPage = ref(1);
-let realms = [];
+const realms = ref([]);
 
 const modalEdit = {
   title: "Editar Reino",
@@ -59,25 +58,17 @@ const modalInfo = {
 
 function fetchRealms(page = 1, c = 10) {
   realmService.realms(page, c).then((data) => {
-    realms = data.realms;
+    realms.value = data.realms;
     currentPage.value = page;
     lastPage.value = data.last_page;
     index.value++;
   });
 }
 
-function callEdit(e) {
-  object.value = e;
-  dialog.value = true;
-}
 function closeDialog(e) {
   dialog.value = false;
   object.value = null;
   fetchRealms();
-  attTable.value = attTable.value == 1 ? 2 : 1;
-}
-function handleManage(e) {
-  dialog.value = e;
 }
 
 function callDelete(e) {
@@ -85,8 +76,8 @@ function callDelete(e) {
   try {
     if (e) {
       realmService.delete(e);
-      fetchRealms();
-      attTable.value = attTable.value == 1 ? 2 : 1;
+
+      realms.value = realms.value.filter((i) => i.id !== e);
     }
   } catch (error) {
     console.error(error);
