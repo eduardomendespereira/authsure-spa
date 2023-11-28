@@ -65,7 +65,7 @@ jobs:
       - name: Testando arquivos
         run : | 
            cat /etc/ansible/ansible.cfg
-        
+           cat /etc/ansible/hosts
     
   # deploy:
   #   name: Construir Imagem e Enviar para o Amazon ECR
