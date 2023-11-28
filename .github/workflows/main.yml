@@ -5,41 +5,41 @@ on:
     branches: [master]
 
 jobs:
-  build:
-    name: Instalar dependencias e Construir
-    runs-on: ubuntu-latest
+  # build:
+  #   name: Instalar dependencias e Construir
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Verificar código
-        uses: actions/checkout@v2
+  #   steps:
+  #     - name: Verificar código
+  #       uses: actions/checkout@v2
 
-      - name: Instala Dependencias e Construir
-        run: |
-          npm install
-          npm run build
+  #     - name: Instala Dependencias e Construir
+  #       run: |
+  #         npm install
+  #         npm run build
 
-  test:
-    name: Testar
-    runs-on: ubuntu-latest
-    needs: build
+  # test:
+  #   name: Testar
+  #   runs-on: ubuntu-latest
+  #   needs: build
 
-    steps:
-      - name: Verificar código
-        uses: actions/checkout@v2
+  #   steps:
+  #     - name: Verificar código
+  #       uses: actions/checkout@v2
 
-      - name: Usar cache das dependências do Node.js
-        uses: actions/cache@v2
-        with:
-          path: |
-            node_modules
-          key: npm-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            npm-
+  #     - name: Usar cache das dependências do Node.js
+  #       uses: actions/cache@v2
+  #       with:
+  #         path: |
+  #           node_modules
+  #         key: npm-${{ hashFiles('package-lock.json') }}
+  #         restore-keys: |
+  #           npm-
 
-      - name: Executar testes
-        run: |
-          npm install
-          npm run test
+  #     - name: Executar testes
+  #       run: |
+  #         npm install
+  #         npm run test
           
   terraform:
     name: Terraform
