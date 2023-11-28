@@ -1,0 +1,84 @@
+name: Deploy no ECR
+#aa
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build:
+    name: Instalar dependencias e Construir
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Verificar código
+        uses: actions/checkout@v2
+
+      - name: Instala Dependencias e Construir
+        run: |
+          npm install
+          npm run build
+
+  test:
+    name: Testar
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Verificar código
+        uses: actions/checkout@v2
+
+      - name: Usar cache das dependências do Node.js
+        uses: actions/cache@v2
+        with:
+          path: |
+            node_modules
+          key: npm-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            npm-
+
+      - name: Executar testes
+        run: |
+          npm install
+          npm run test
+          
+  terraform:
+    name: Terraform
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: instalar deps
+        run: |
+          apt-get update
+          apt-get install terraform -y
+        
+    
+  # deploy:
+  #   name: Construir Imagem e Enviar para o Amazon ECR
+  #   runs-on: ubuntu-latest
+  #   needs: test
+
+  #   steps:
+  #     - name: Verificar código
+  #       uses: actions/checkout@v2
+
+  #     - name: Configurar credenciais da AWS
+  #       uses: aws-actions/configure-aws-credentials@v1
+  #       with:
+  #         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #         aws-region: us-east-1
+  #         aws-session-token: ${{ secrets.AWS_TOKEN }}
+
+  #     - name: Fazer login no Amazon ECR
+  #       id: login-ecr
+  #       run: |
+  #         aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.AWS_URL }}
+
+  #     - name: Construir, adicionar tag e enviar imagem para o Amazon ECR
+  #       env:
+  #         ECR_REGISTRY: ${{ secrets.AWS_URL }}
+  #         ECR_REPOSITORY: ${{ secrets.AWS_IMAGE }}
+  #       run: |
+  #         docker build -t $ECR_REPOSITORY .
+  #         docker tag $ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:latest
+  #         docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
