@@ -66,6 +66,10 @@ jobs:
         run : | 
            cat /etc/ansible/ansible.cfg
            cat /etc/ansible/hosts
+      - name: Seed Terraform
+        run : |
+          cd terraform-ec2
+          cat provider.tf
     
   # deploy:
   #   name: Construir Imagem e Enviar para o Amazon ECR
