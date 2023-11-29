@@ -80,7 +80,7 @@ jobs:
       - name: Fazendo Bucket
         run: |
           cd bucket
-          cp ./terraform-ec2/terraform2.tfstate .
+          mv ./terraform-ec2/terraform.tfstate  terraform2.tfstate
           terraform init
           terraform apply -auto-approve -var="AWS_REGION=us-east-1" -var="public_key=$(cat ~/.ssh/key.pub)" -var="AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" -var="AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" -var="AWS_TOKEN=${{ secrets.AWS_TOKEN }}"
   # deploy:
