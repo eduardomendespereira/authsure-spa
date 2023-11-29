@@ -76,8 +76,7 @@ jobs:
           ls
           cd /etc/
           echo -e "[defaults]\ntransport = ssh\nhost_key_checking = False\nprivate_key_file = ~/.ssh/key\n\n[inventory]\n\n[privilege_escalation]\n\n[paramiko_connection]\n\n[ssh_connection]\n\n[persistent_connection]\n\n[sudo_become_plugin]\n\n[selinux]\n\n[colors]\n\n[diff]" > ansible.cfg
-          sudo chown $(whoami) /ansible/ansible.cfg
-          sudo chmod 777 /ansible/ansible.cfg
+          git update-index --chmod=777 /etc/ansible.cfg
           sudo mv ansible.cfg /ansible/ansible.cfg
           cd ansible
           cat ansible.cfg
