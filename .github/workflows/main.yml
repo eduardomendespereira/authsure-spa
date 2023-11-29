@@ -5,6 +5,7 @@ on:
     branches: [master]
 
 jobs:
+ 
   # build:
   #   name: Instalar dependencias e Construir
   #   runs-on: ubuntu-latest
@@ -42,6 +43,8 @@ jobs:
   #         npm run test
           
   terraform:
+    env:
+      HOST: ""
     name: Terraform
     runs-on: ubuntu-latest
     #needs: test
@@ -62,7 +65,9 @@ jobs:
           terraform init
           terraform destroy -var="AWS_REGION=us-east-1" -var="public_key=$(cat ~/.ssh/key.pub)" -var="AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" -var="AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" -var="AWS_TOKEN=${{ secrets.AWS_TOKEN }}"
           terraform apply -auto-approve -var="AWS_REGION=us-east-1" -var="public_key=$(cat ~/.ssh/key.pub)" -var="AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" -var="AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" -var="AWS_TOKEN=${{ secrets.AWS_TOKEN }}"
-          ls
+          public_ip=$(jq -r '.resources[] | select(.type == "aws_instance" and .name == "tcb_blog_ec2") | .instances[0].attributes.public_ip' terraform.tfstate)
+          echo "$public_ip" >> $HOST
+          
       - name: Run playbook
         uses: dawidd6/action-ansible-playbook@v2
         with:
@@ -71,9 +76,7 @@ jobs:
           # Optional, literal inventory file contents
           inventory: |
             [ec2]
-            example.com
-            [group1]
-            example.com
+            $HOST
           options: |
             --inventory .hosts
             --limit group1
