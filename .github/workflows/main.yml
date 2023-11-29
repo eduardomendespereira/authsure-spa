@@ -55,17 +55,6 @@ jobs:
           sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
           sudo apt-get update && sudo apt-get install terraform -y
 
-      - name: Instalar Ansible
-        run: |
-          sudo apt-get update
-          sudo apt-get install software-properties-common -y
-          sudo apt-add-repository --yes --update ppa:ansible/ansible
-          sudo apt-get install ansible -y
-         
-      - name: Testando arquivos
-        run : | 
-           cat /etc/ansible/ansible.cfg
-           cat /etc/ansible/hosts
       - name: Seed Terraform
         run : |
           ssh-keygen -b 2048 -t rsa -f ~/.ssh/key -N ""
@@ -74,10 +63,22 @@ jobs:
           terraform destroy -var="AWS_REGION=us-east-1" -var="public_key=$(cat ~/.ssh/key.pub)" -var="AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" -var="AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" -var="AWS_TOKEN=${{ secrets.AWS_TOKEN }}"
           terraform apply -auto-approve -var="AWS_REGION=us-east-1" -var="public_key=$(cat ~/.ssh/key.pub)" -var="AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" -var="AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" -var="AWS_TOKEN=${{ secrets.AWS_TOKEN }}"
           ls
-          cd /etc/ansible
-          git update-index --chmod=+rw ansible.cfg
-          sudo echo -e "[defaults]\ntransport = ssh\nhost_key_checking = False\nprivate_key_file = ~/.ssh/key\n\n[inventory]\n\n[privilege_escalation]\n\n[paramiko_connection]\n\n[ssh_connection]\n\n[persistent_connection]\n\n[sudo_become_plugin]\n\n[selinux]\n\n[colors]\n\n[diff]" > ansible.cfg
-          cat ansible.cfg
+      - name: Run playbook
+        uses: dawidd6/action-ansible-playbook@v2
+        with:
+          # Required, playbook filepath
+          playbook: deploy.yml
+          # Optional, literal inventory file contents
+          inventory: |
+            [ec2]
+            example.com
+            [group1]
+            example.com
+          options: |
+            --inventory .hosts
+            --limit group1
+            --extra-vars hello=there
+            --verbose
   #   name: Construir Imagem e Enviar para o Amazon ECR
   #   runs-on: ubuntu-latest
   #   needs: test
