@@ -65,7 +65,7 @@ jobs:
           terraform init
           terraform destroy -var="AWS_REGION=us-east-1" -var="public_key=$(cat ~/.ssh/key.pub)" -var="AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" -var="AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" -var="AWS_TOKEN=${{ secrets.AWS_TOKEN }}"
           terraform apply -auto-approve -var="AWS_REGION=us-east-1" -var="public_key=$(cat ~/.ssh/key.pub)" -var="AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" -var="AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" -var="AWS_TOKEN=${{ secrets.AWS_TOKEN }}"
-          "$(jq -r '.resources[] | select(.type == "aws_instance" and .name == "tcb_blog_ec2") | .instances[0].attributes.public_ip' terraform.tfstate)" >> "{$HOST}"
+          $(jq -r '.resources[] | select(.type == "aws_instance" and .name == "tcb_blog_ec2") | .instances[0].attributes.public_ip' terraform.tfstate) >> "{$HOST}"
           
           
       - name: Run playbook
