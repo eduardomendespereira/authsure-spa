@@ -75,10 +75,10 @@ jobs:
           terraform apply -auto-approve -var="AWS_REGION=us-east-1" -var="public_key=$(cat ~/.ssh/key.pub)" -var="AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" -var="AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" -var="AWS_TOKEN=${{ secrets.AWS_TOKEN }}"
           ls
           cat terraform.tfstate
-          cd /etc/ansible
-          chmod 777 ansible.cfg
-          sudo rm ansible.cfg
+          cd /etc/
           echo -e "[defaults]\ntransport = ssh\nhost_key_checking = False\nprivate_key_file = ~/.ssh/key\n\n[inventory]\n\n[privilege_escalation]\n\n[paramiko_connection]\n\n[ssh_connection]\n\n[persistent_connection]\n\n[sudo_become_plugin]\n\n[selinux]\n\n[colors]\n\n[diff]" > ansible.cfg
+          sudo mv ansible.cfg /ansible/ansible.cfg
+          cd ansible
           cat ansible.cfg
   #   name: Construir Imagem e Enviar para o Amazon ECR
   #   runs-on: ubuntu-latest
