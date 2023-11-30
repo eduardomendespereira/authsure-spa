@@ -97,9 +97,12 @@ jobs:
         uses: dawidd6/action-ansible-playbook@v2
         with:
           playbook: deploy.yml
+          inventory: |
+            [ec2]
+            $HOST
           options: |
-            --extra-vars "host=${{ secrets.HOST }}"  # Use a variável diretamente
-            --extra-vars "hello=there"
+            --inventory .hosts
+            --extra-vars hello=there
             --verbose
 
 
