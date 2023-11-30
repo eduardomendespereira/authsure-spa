@@ -74,23 +74,11 @@ jobs:
       
           # Verificar se o IP não está vazio
           if [ -n "$IP" ]; then
-            echo "Public IP: $IP"
-            
-            # Criar o diretório se não existir
-            sudo mkdir -p "$(dirname "/$HOST/")"
-      
-            # Ajustar permissões
-            sudo chmod 777 "/$HOST/"
-      
-            # Escrever o IP no arquivo
-            echo "$IP" > "/$HOST/public_ip.txt"
+            echo "Public IP: $IP"  
           else
             echo "Erro: IP público não encontrado no arquivo terraform.tfstate."
             exit 1
           fi
-
-      - name: Setar variável de ambiente HOST
-        run: echo "HOST=${{ secrets.HOST }}" >> $GITHUB_ENV
 
       - name: Run playbook
         id: ansible
@@ -99,7 +87,7 @@ jobs:
           playbook: deploy.yml
           inventory: |
             [ec2]
-            authsure ansible_host="{{ IP }}" ansible_user=authsure
+            authsure ansible_host="{{ $IP }}" ansible_user=authsure
           options: |
             --inventory .hosts
             --extra-vars hello=there
