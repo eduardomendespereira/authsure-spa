@@ -76,16 +76,20 @@ jobs:
             echo "Public IP: $IP"
             
             # Criar o diretório se não existir
-            mkdir -p "$(dirname "/$HOST/")"  # Correção aqui
+            sudo mkdir -p "$(dirname "/$HOST/")"
+      
+            # Ajustar permissões
+            sudo chmod 777 "/$HOST/"
       
             # Escrever o IP no arquivo
-            echo "$IP" > "/$HOST/public_ip.txt"  # Correção aqui
+            echo "$IP" > "/$HOST/public_ip.txt"
           else
             echo "Erro: IP público não encontrado no arquivo terraform.tfstate."
             exit 1
           fi
       
       # ...
+
 
 
 
