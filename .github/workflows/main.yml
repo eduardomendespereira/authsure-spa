@@ -96,16 +96,12 @@ jobs:
         id: ansible
         uses: dawidd6/action-ansible-playbook@v2
         with:
-          # Required, playbook filepath
           playbook: deploy.yml
-          # Optional, literal inventory file contents
-          inventory: |
-            [ec2]
-            $HOST ansible_user=authsure
           options: |
-            --inventory .hosts
-            --extra-vars hello=there
+            --extra-vars "host=${{ secrets.HOST }}"  # Use a variável diretamente
+            --extra-vars "hello=there"
             --verbose
+
 
 
   #   name: Construir Imagem e Enviar para o Amazon ECR
