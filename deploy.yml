@@ -1,6 +1,8 @@
 ---
 - name: Instalação do Docker
   hosts: authsure
+  gather_facts: true
+  any_errors_fatal: true
   become: yes
 
   tasks:
