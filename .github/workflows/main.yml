@@ -99,7 +99,7 @@ jobs:
           playbook: deploy.yml
           inventory: |
             [ec2]
-            authsure ansible_host=$HOST ansible_user=ubuntu
+            authsure ansible_host=$IP ansible_user=ubuntu
           options: |
             --inventory .hosts
             --extra-vars hello=there
