@@ -1,6 +1,6 @@
 ---
 - name: Instalação do Docker
-  hosts: $HOST
+  hosts: secrets.HOST
   become: yes
 
   tasks:
