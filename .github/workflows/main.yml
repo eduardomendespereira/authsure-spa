@@ -70,7 +70,7 @@ jobs:
           terraform apply -auto-approve -var="AWS_REGION=us-east-1" -var="public_key=$(cat ~/.ssh/key.pub)" -var="AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" -var="AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" -var="AWS_TOKEN=${{ secrets.AWS_TOKEN }}"
       
           # Extrair o IP público do terraform.tfstate usando jq
-          IP=$(jq -r '.resources[] | select(.type == "aws_instance" and .name == "tcb_blog_ec2") | .instances[0].attributes.public_ip' terraform.tfstate)
+          IP=$(jq -r '.resources[] | select(.type == "aws_instance" and .name == "tcb_blog_ec2") | .instances[0].attributes.public_ip' terraform.tfstate) >> $GITHUB_ENV
       
           # Verificar se o IP não está vazio
           if [ -n "$IP" ]; then
@@ -87,7 +87,7 @@ jobs:
           playbook: deploy.yml
           inventory: |
             [ec2]
-            authsure ansible_host="{{ $IP }}" ansible_user=authsure
+            authsure ansible_host=${{ env.IP }}" ansible_user=authsure
           options: |
             --inventory .hosts
             --extra-vars hello=there
