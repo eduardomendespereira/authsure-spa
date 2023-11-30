@@ -1,6 +1,6 @@
 ---
 - name: Instalação do Docker
-  hosts: secrets.HOST
+  hosts: authsure
   become: yes
 
   tasks:
