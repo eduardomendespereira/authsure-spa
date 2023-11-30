@@ -47,8 +47,14 @@ jobs:
       HOST: ""
     name: Terraform
     runs-on: ubuntu-latest
+
+    
     #needs: test
     steps:
+      - name: Destruir terraform antes de iniciar
+        run: terraform init 
+             terraform destroy -auto-approve
+    
       - name: Checkout do repositório
         uses: actions/checkout@v2
         
@@ -104,8 +110,6 @@ jobs:
             --extra-vars hello=there
             --verbose
 
-      - name: Destruir terraform
-        run: terraform destroy -auto-approve
 
   #   name: Construir Imagem e Enviar para o Amazon ECR
   #   runs-on: ubuntu-latest
