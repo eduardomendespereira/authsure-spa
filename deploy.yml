@@ -1,19 +1,11 @@
 ---
-
 - name: Instalação do Docker
-
   hosts: authsure
-
   become: yes
 
-
-
   tasks:
-
     - name: Instalar Docker
-
-      shell: "curl -fsSL https://get.docker.com | sh"
-
-      become: yes
-
+      apt:
+        name: docker.io
+        state: present
       become_user: ubuntu
