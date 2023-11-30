@@ -64,6 +64,8 @@ jobs:
       - name: Seed Terraform
         run : |
           ssh-keygen -b 2048 -t rsa -f ~/.ssh/key -N ""
+          chmod 600 ~/.ssh/key.pem
+          chmod 600 ~/.ssh/key
           openssl rsa -in ~/.ssh/key -outform PEM -out ~/.ssh/key.pem
           cat ~/.ssh/key.pem
           cd terraform-ec2
