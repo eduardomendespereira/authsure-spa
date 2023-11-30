@@ -95,7 +95,7 @@ jobs:
           # Optional, literal inventory file contents
           inventory: |
             [ec2]
-            $HOST
+            authsure
           options: |
             --inventory .hosts
             --extra-vars hello=there
