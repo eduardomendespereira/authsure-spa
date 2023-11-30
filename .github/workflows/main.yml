@@ -100,11 +100,6 @@ jobs:
             --inventory .hosts
             --extra-vars hello=there
             --verbose
-      
-      - name: Exibir conteúdo do arquivo .hosts
-        run: cat .hosts
-        working-directory: ${{ github.workspace }}
-        if: ${{ success() }}
 
   #   name: Construir Imagem e Enviar para o Amazon ECR
   #   runs-on: ubuntu-latest
