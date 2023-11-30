@@ -10,7 +10,7 @@ jobs:
   #   name: Instalar dependencias e Construir
   #   runs-on: ubuntu-latest
 
-  #   steps:
+  #   steps: 
   #     - name: Verificar código 
   #       uses: actions/checkout@v2
  
