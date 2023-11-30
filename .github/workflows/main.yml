@@ -69,14 +69,23 @@ jobs:
           # Extracting the public IP from terraform.tfstate using jq
           IP=$(jq -r '.resources[] | select(.type == "aws_instance" and .name == "tcb_blog_ec2") | .instances[0].attributes.public_ip' terraform.tfstate)
           
-          # Checking if the IP is not empty
+          # Extrair o IP público do terraform.tfstate usando jq
+          IP=$(jq -r '.resources[] | select(.type == "aws_instance" and .name == "tcb_blog_ec2") | .instances[0].attributes.public_ip' terraform.tfstate)
+          
+          # Verificar se o IP não está vazio
           if [ -n "$IP" ]; then
             echo "Public IP: $IP"
+            
+            # Criar o diretório se não existir
+            mkdir -p "$(dirname ${HOST})"
+          
+            # Escrever o IP no arquivo
             echo "$IP" > "${HOST}"
           else
             echo "Erro: IP público não encontrado no arquivo terraform.tfstate."
             exit 1
           fi
+
 
 
           
