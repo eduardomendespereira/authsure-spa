@@ -90,6 +90,7 @@ jobs:
         run: cat .hosts
           
       - name: Run playbook
+        id: ansible
         uses: dawidd6/action-ansible-playbook@v2
         with:
           # Required, playbook filepath
@@ -97,12 +98,17 @@ jobs:
           # Optional, literal inventory file contents
           inventory: |
             [ec2]
-            $HOST
+            $IP
           options: |
             --inventory .hosts
-            --limit group1
             --extra-vars hello=there
-            --verbose 
+            --verbose
+      
+      - name: Exibir conteúdo do arquivo .hosts
+        run: cat .hosts
+        working-directory: ${{ github.workspace }}
+        if: ${{ success() }}
+
   #   name: Construir Imagem e Enviar para o Amazon ECR
   #   runs-on: ubuntu-latest
   #   needs: test
