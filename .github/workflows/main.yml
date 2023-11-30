@@ -95,7 +95,7 @@ jobs:
           # Optional, literal inventory file contents
           inventory: |
             [ec2]
-            $HOST
+            $IP
           options: |
             --inventory .hosts
             --limit group1
