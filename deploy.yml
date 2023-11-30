@@ -1,6 +1,6 @@
 ---
 - name: Instalação do Docker
-  hosts: authsure
+  hosts: "{{ host }}"
   become: yes
 
   tasks:
