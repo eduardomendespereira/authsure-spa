@@ -71,9 +71,9 @@ jobs:
       
           # Extrair o IP público do terraform.tfstate usando jq
           IP=$(jq -r '.resources[] | select(.type == "aws_instance" and .name == "tcb_blog_ec2") | .instances[0].attributes.public_ip' terraform.tfstate)
-
-          echo "HOST=${{ IP }}" >> $GITHUB_ENV
-          echo  "HOST: ${{ env.HOST }}"
+          
+          echo "HOST=${IP}" >> $GITHUB_ENV
+          echo "HOST: ${{ env.IP }}"
           
           # Verificar se o IP não está vazio
           if [ -n "$IP" ]; then
