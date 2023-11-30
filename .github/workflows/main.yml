@@ -66,9 +66,6 @@ jobs:
           terraform destroy -var="AWS_REGION=us-east-1" -var="public_key=$(cat ~/.ssh/key.pub)" -var="AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" -var="AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" -var="AWS_TOKEN=${{ secrets.AWS_TOKEN }}"
           terraform apply -auto-approve -var="AWS_REGION=us-east-1" -var="public_key=$(cat ~/.ssh/key.pub)" -var="AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" -var="AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" -var="AWS_TOKEN=${{ secrets.AWS_TOKEN }}"
           
-          # Extracting the public IP from terraform.tfstate using jq
-          IP=$(jq -r '.resources[] | select(.type == "aws_instance" and .name == "tcb_blog_ec2") | .instances[0].attributes.public_ip' terraform.tfstate)
-          
           # Extrair o IP público do terraform.tfstate usando jq
           IP=$(jq -r '.resources[] | select(.type == "aws_instance" and .name == "tcb_blog_ec2") | .instances[0].attributes.public_ip' terraform.tfstate)
           
@@ -77,14 +74,15 @@ jobs:
             echo "Public IP: $IP"
             
             # Criar o diretório se não existir
-            mkdir -p "$(dirname ${HOST})"
+            mkdir -p "$(dirname "/${HOST}")"
           
             # Escrever o IP no arquivo
-            echo "$IP" > "${HOST}"
+            echo "$IP" > "/${HOST}"
           else
             echo "Erro: IP público não encontrado no arquivo terraform.tfstate."
             exit 1
           fi
+
 
 
 
