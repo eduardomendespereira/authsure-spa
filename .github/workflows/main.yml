@@ -51,9 +51,6 @@ jobs:
     
     #needs: test
     steps:
-      - name: Destruir terraform antes de iniciar
-        run: terraform init 
-             terraform destroy -auto-approve
     
       - name: Checkout do repositório
         uses: actions/checkout@v2
