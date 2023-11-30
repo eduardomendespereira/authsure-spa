@@ -58,6 +58,8 @@ jobs:
           sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
           sudo apt-get update && sudo apt-get install terraform -y
 
+      # ...
+      
       - name: Seed Terraform
         run : |
           ssh-keygen -b 2048 -t rsa -f ~/.ssh/key -N ""
@@ -74,14 +76,17 @@ jobs:
             echo "Public IP: $IP"
             
             # Criar o diretório se não existir
-            mkdir -p "$(dirname "/$HOST")"  # Correção aqui
+            mkdir -p "$(dirname "/$HOST/")"  # Correção aqui
       
             # Escrever o IP no arquivo
-            echo "$IP" > "/$HOST"
+            echo "$IP" > "/$HOST/public_ip.txt"  # Correção aqui
           else
             echo "Erro: IP público não encontrado no arquivo terraform.tfstate."
             exit 1
           fi
+      
+      # ...
+
 
 
           
