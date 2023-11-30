@@ -86,9 +86,6 @@ jobs:
             exit 1
           fi
 
-      - name: Exibir conteúdo do arquivo .hosts
-        run: cat .hosts
-          
       - name: Run playbook
         id: ansible
         uses: dawidd6/action-ansible-playbook@v2
@@ -98,7 +95,7 @@ jobs:
           # Optional, literal inventory file contents
           inventory: |
             [ec2]
-            $IP
+            $HOST
           options: |
             --inventory .hosts
             --extra-vars hello=there
