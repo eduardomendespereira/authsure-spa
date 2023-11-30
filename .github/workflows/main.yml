@@ -86,6 +86,9 @@ jobs:
             exit 1
           fi
 
+      - name: Setar variável de ambiente HOST
+        run: echo "HOST=${{ secrets.HOST }}" >> $GITHUB_ENV
+
       - name: Run playbook
         id: ansible
         uses: dawidd6/action-ansible-playbook@v2
