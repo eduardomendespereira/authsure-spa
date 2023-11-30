@@ -104,6 +104,9 @@ jobs:
             --extra-vars hello=there
             --verbose
 
+      - name: Destruir terraform
+        run: terraform destroy -auto-approve
+
   #   name: Construir Imagem e Enviar para o Amazon ECR
   #   runs-on: ubuntu-latest
   #   needs: test
