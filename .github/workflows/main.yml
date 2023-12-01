@@ -84,7 +84,8 @@ jobs:
 
           chmod 600 ~/.ssh/key
           cat ~/.ssh/key
-          ssh -i ~/.ssh/key ubuntu@$IP
+          sleep 60
+          ssh -i ~/.ssh/key ubuntu@$IP 'systemctl status ssh'
        
 
       - name: Run playbook
