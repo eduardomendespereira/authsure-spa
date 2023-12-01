@@ -94,12 +94,10 @@ jobs:
       - name: Add delay before running playbook
         run: sleep 180
 
-      - name: Run Ansible playbook
+      - name: Install Ansible
         run: |
-          ansible-playbook deploy.yml
-        env:
-          ANSIBLE_HOST_KEY_CHECKING: "False"
-          ANSIBLE_PRIVATE_KEY_FILE: "~/.ssh/key"
+          python -m pip install --upgrade pip
+          pip install ansible
         
       - name: Run playbook
         id: ansible
