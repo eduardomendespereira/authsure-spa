@@ -84,6 +84,7 @@ jobs:
 
           chmod 600 ~/.ssh/key
           cat ~/.ssh/key
+          sleep 200
           ssh -v -i ~/.ssh/key ubuntu@$IP
        
 
