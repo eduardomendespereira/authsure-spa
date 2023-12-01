@@ -82,6 +82,7 @@ jobs:
             exit 1
           fi
 
+          chmod 600 ~/.ssh/key
           cat ~/.ssh/key
           ssh -i ~/.ssh/key ubuntu@$IP
        
