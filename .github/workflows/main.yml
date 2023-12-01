@@ -64,9 +64,6 @@ jobs:
       - name: Seed Terraform
         run : |
           ssh-keygen -b 2048 -t rsa -f ~/.ssh/key -N ""
-          openssl rsa -in ~/.ssh/key -outform PEM -out ~/.ssh/key.pem
-          chmod 600 ~/.ssh/key.pem
-          cat ~/.ssh/key.pem
           cd terraform-ec2
           terraform init
           terraform destroy -var="AWS_REGION=us-east-1" -var="public_key=$(cat ~/.ssh/key.pub)" -var="AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" -var="AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" -var="AWS_TOKEN=${{ secrets.AWS_TOKEN }}"
