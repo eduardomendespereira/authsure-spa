@@ -101,10 +101,8 @@ jobs:
   
       - name: Create SSH key
         run: |
-          ssh-keygen -b 2048 -t rsa -f ~/.ssh/key -N ""
           cat ~/.ssh/key.pub >> ~/.ssh/authorized_keys
           chmod 600 ~/.ssh/authorized_keys
-          chmod 600 ~/.ssh/key
           chmod 644 ~/.ssh/key.pub
   
       - name: Run Ansible playbook locally
