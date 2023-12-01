@@ -88,7 +88,7 @@ jobs:
           #ssh -o StrictHostKeyChecking=no -v -i ~/.ssh/key ubuntu@$IP
 
       - name: Add delay before running playbook
-        run: sleep 60
+        run: sleep 120
 
       - name: Run playbook
         id: ansible
