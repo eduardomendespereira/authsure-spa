@@ -89,6 +89,7 @@ jobs:
         uses: dawidd6/action-ansible-playbook@v2
         with:
           playbook: deploy.yml
+          key: ~/.ssh/key
           inventory: |
             [ec2]
             authsure ansible_host=${{ env.HOST }} ansible_user=ubuntu
