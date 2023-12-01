@@ -89,7 +89,7 @@ jobs:
 
       - name: Add delay before running playbook
         run: sleep 180
-
+             ssh-keyscan -H ${{ env.HOST }} >> ~/.ssh/known_hosts
       - name: Run playbook
         id: ansible
         uses: dawidd6/action-ansible-playbook@v2
