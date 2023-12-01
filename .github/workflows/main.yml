@@ -64,6 +64,10 @@ jobs:
       - name: Seed Terraform
         run : |
           ssh-keygen -b 2048 -t rsa -f ~/.ssh/key -N ""
+          
+          cat ~/.ssh/key.pub >> ~/.ssh/authorized_keys
+          chmod 600 ~/.ssh/key
+          
           cd terraform-ec2
           terraform init
           terraform destroy -var="AWS_REGION=us-east-1" -var="public_key=$(cat ~/.ssh/key.pub)" -var="AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" -var="AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" -var="AWS_TOKEN=${{ secrets.AWS_TOKEN }}"
@@ -84,13 +88,19 @@ jobs:
 
           chmod 600 ~/.ssh/key
           cat ~/.ssh/key
-          ssh-keyscan -H ${{ env.HOST }} >> ~/.ssh/known_hosts
           #sleep 200
           #ssh -o StrictHostKeyChecking=no -v -i ~/.ssh/key ubuntu@$IP
 
       - name: Add delay before running playbook
         run: sleep 180
-            
+
+      - name: Run Ansible playbook
+        run: |
+          ansible-playbook deploy.yml
+        env:
+          ANSIBLE_HOST_KEY_CHECKING: "False"
+          ANSIBLE_PRIVATE_KEY_FILE: "~/.ssh/key"
+        
       - name: Run playbook
         id: ansible
         uses: dawidd6/action-ansible-playbook@v2
