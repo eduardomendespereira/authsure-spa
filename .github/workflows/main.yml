@@ -84,8 +84,8 @@ jobs:
 
           chmod 600 ~/.ssh/key
           cat ~/.ssh/key
-          sleep 60
-          ssh -i ~/.ssh/key ubuntu@$IP 'systemctl status ssh'
+          ssh-keyscan -H ${{ env.HOST }} >> ~/.ssh/known_hosts
+          ssh -i ~/.ssh/key -v ubuntu@$IP 'systemctl status ssh'
        
 
       - name: Run playbook
