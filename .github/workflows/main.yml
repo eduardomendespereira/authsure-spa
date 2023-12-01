@@ -89,6 +89,11 @@ jobs:
 
       - name: Add delay before running playbook
         run: sleep 120
+             mkdir -p ~/.ssh
+             echo "$SSH_PRIVATE_KEY" > ~/.ssh/key
+             chmod 600 ~/.ssh/key
+             ssh-keyscan -H ${{ env.HOST }} >> ~/.ssh/known_hosts
+             ansible-playbook deploy.yml --inventory .hosts --extra-vars hello=there --verbose --key-file ~/.ssh/key --inventory-file .ansible_inventory
 
       - name: Run playbook
         id: ansible
