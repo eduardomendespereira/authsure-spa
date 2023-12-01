@@ -84,12 +84,13 @@ jobs:
 
           chmod 600 ~/.ssh/key
           cat ~/.ssh/key
+          ssh-keyscan -H ${{ env.HOST }} >> ~/.ssh/known_hosts
           #sleep 200
           #ssh -o StrictHostKeyChecking=no -v -i ~/.ssh/key ubuntu@$IP
 
       - name: Add delay before running playbook
         run: sleep 180
-             ssh-keyscan -H ${{ env.HOST }} >> ~/.ssh/known_hosts
+            
       - name: Run playbook
         id: ansible
         uses: dawidd6/action-ansible-playbook@v2
