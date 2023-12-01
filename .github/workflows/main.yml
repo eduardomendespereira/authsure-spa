@@ -84,9 +84,10 @@ jobs:
 
           chmod 600 ~/.ssh/key
           cat ~/.ssh/key
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/key
           ssh-keyscan -H ${{ env.HOST }} >> ~/.ssh/known_hosts
-          chmod 644 ~/.ssh/known_hosts
-          ssh -i ~/.ssh/key -v ubuntu@$IP 'systemctl status ssh'
+          chmod 600 ~/.ssh/known_hosts
+          ssh -i ~/.ssh/key ubuntu@${{ env.HOST }} 'systemctl status ssh'
        
 
       - name: Run playbook
