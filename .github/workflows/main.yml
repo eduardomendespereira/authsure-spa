@@ -89,11 +89,6 @@ jobs:
 
        #- name: Add delay before running playbook
        # run: sleep 120 
-      - name: Install ansible
-        run : |
-          sudo apt install ansible
-          cat ~/.ssh/key.pub
-
 
       - name: Run Ansible playbook
         uses: dawidd6/action-ansible-playbook@v2.6.0
@@ -104,7 +99,8 @@ jobs:
           inventory: |
             [ec2] 
             ${{ env.HOST }} ansible_ssh_user=ubuntu ansible_ssh_private_key_file="~/.ssh/key"
-
+          known_hosts: |
+            ${{ env.HOST }} $(cat ~/.ssh/key)
 
       # - name: Criação de arquivo hosts
       #   run: |
