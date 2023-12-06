@@ -118,6 +118,12 @@ jobs:
             [colors]
             [diff]" > ansible.cfg
 
+
+      - name: Run ultima esperança
+        run: |
+          sleep 30
+          ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook deploy.yml -i .hosts
+
       - name: Run Ansible playbook
         uses: dawidd6/action-ansible-playbook@v2.6.0
         with:
@@ -128,10 +134,6 @@ jobs:
           extra-vars: "ansible_host=${{ env.HOST }}"
           known_hosts: |
             ${{ env.HOST }} $(cat ~/.ssh/key.pub)
-
-      - name: Run ultima esperança
-        run: |
-          ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook deploy.yml -i .hosts
          
       # - name: Adicionar host ao known_hosts
       #   run: |
