@@ -100,7 +100,7 @@ jobs:
             [ec2] 
             ${{ env.HOST }} ansible_ssh_user=ubuntu ansible_ssh_private_key_file="~/.ssh/key"
           known_hosts: |
-            ${{ env.HOST }} $(cat ~/.ssh/key)
+            ${{ env.HOST }} $(cat ~/.ssh/key.pub)
 
       # - name: Criação de arquivo hosts
       #   run: |
