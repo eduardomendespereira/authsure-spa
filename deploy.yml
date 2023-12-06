@@ -13,12 +13,9 @@
     - name: Adicionar chave de host ao known_hosts
       command: ssh-keyscan -H "{{ ansible_host }}" >> ~/.ssh/known_hosts
 
-
-
     - name: Install package dependencies.
       package: name={{ item }} state=present
       with_items:
-        - python
         - unzip
     
     - name: Download the awscli bundle.
