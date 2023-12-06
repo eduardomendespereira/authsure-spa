@@ -7,7 +7,7 @@
 
   tasks:
     - name: Adicionar chave de host ao known_hosts
-      command: ssh-keyscan -H "authsure" >> ~/.ssh/known_hosts
+      command: ssh-keyscan -H "{{ ansible_host }}" >> ~/.ssh/known_hosts
 
     - name: Instalar Docker
       apt:
