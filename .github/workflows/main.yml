@@ -118,8 +118,9 @@ jobs:
             [colors]
             [diff]" > ansible.cfg
 
-      - name: Run Ansible playbook
+      - name: Run ultima esperança
         run: |
+          sleep 200
           ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook deploy.yml -i .hosts
 
 
