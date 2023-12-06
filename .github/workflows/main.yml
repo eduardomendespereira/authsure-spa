@@ -97,6 +97,7 @@ jobs:
 
       - name: Run playbook
         run: |
+          sleep 60
           ansible-playbook -i .hosts deploy.yml --user=ubuntu --private-key=~/.ssh/key
 
       # - name: Run playbook
