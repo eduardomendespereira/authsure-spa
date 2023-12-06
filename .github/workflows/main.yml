@@ -91,6 +91,7 @@ jobs:
        # run: sleep 120 
       - name: Install ansible
         run : |
+          mkdir ~/.ssh/known_hosts
           ssh-keygen -R ${{ env.HOST }}
           sudo apt-add-repository ppa:ansible/ansible
           sudo apt install ansible
