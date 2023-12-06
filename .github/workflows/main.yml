@@ -87,22 +87,30 @@ jobs:
           sleep 160
           ssh -o StrictHostKeyChecking=no -v -i ~/.ssh/key ubuntu@$IP
 
-      #- name: Add delay before running playbook
+       #- name: Add delay before running playbook
        # run: sleep 120 
 
+      - name: Criação de arquivo hosts
+        run: |
+         echo "[ec2]"$'\n'"authsure ansible_host=${{ env.HOST }} ansible_user=ubuntu ansible_ssh_private_key_file="~/.ssh/key"" > .hosts
+
       - name: Run playbook
-        id: ansible
-        uses: dawidd6/action-ansible-playbook@v2
-        with:
-          playbook: deploy.yml
-          key: ~/.ssh/key
-          inventory: |
-            [ec2]
-            authsure ansible_host=${{ env.HOST }} ansible_user=ubuntu ansible_ssh_private_key_file="~/.ssh/key"
-          options: |
-            --inventory .hosts
-            --extra-vars hello=there
-            --verbose
+        run: |
+          ansible-playbook -i ../deploy.yml --user=ubuntu --private-key=~/.ssh/key
+
+      # - name: Run playbook
+      #   id: ansible
+      #   uses: dawidd6/action-ansible-playbook@v2
+      #   with:
+      #     playbook: deploy.yml
+      #     key: ~/.ssh/key
+      #     inventory: |
+      #       [ec2]
+      #       authsure ansible_host=${{ env.HOST }} ansible_user=ubuntu ansible_ssh_private_key_file="~/.ssh/key"
+      #     options: |
+      #       --inventory .hosts
+      #       --extra-vars hello=there
+      #       --verbose
 
 
 
