@@ -45,6 +45,9 @@ jobs:
   terraform:
     env:
       HOST: ""
+      AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      REGION: "us-east-1"
     name: Terraform
     runs-on: ubuntu-latest
 
