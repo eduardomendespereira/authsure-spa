@@ -21,7 +21,19 @@
       become: yes
       become_user: ubuntu
 
+    - name: Instalar boto3
+      become: yes
+      become_user: root
+      pip:
+        name: boto3
+        state: present
+
     - name: Autenticação no ECR
-      command: "aws configure set aws_access_key_id {{ aws_access_key_id }} && aws configure set aws_secret_access_key {{ aws_secret_access_key }} && aws configure set aws_session_token {{ aws_session_token }} && aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin {{ aws_account_id }}.dkr.ecr.us-east-1.amazonaws.com"
+      ecr_login:
+        aws_access_key: "{{ aws_access_key_id }}"
+        aws_secret_key: "{{ aws_secret_access_key }}"
+        aws_session_token: "{{ aws_session_token }}"
+        region: us-east-1
+        registry: "{{ aws_account_id }}.dkr.ecr.us-east-1.amazonaws.com"
       become: yes
       become_user: ubuntu
