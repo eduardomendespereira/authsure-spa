@@ -89,23 +89,7 @@ jobs:
           chmod 600 ~/.ssh/key.pub
           cat ~/.ssh/key
 
-      - name: Criação de arquivo hosts
-        run: |
-          echo "[ec2]"$'\n'"authsure ansible_host=${{ env.HOST }} ansible_user=ubuntu ansible_ssh_private_key_file=${{ github.workspace }}/.ssh/key" > .hosts
-          cat .hosts
-          echo "[defaults]
-            transport = ssh
-            host_key_checking = False
-            private_key_file = ~/.ssh/key
-            [inventory]
-            [privilege_escalation]
-            [paramiko_connection]
-            [ssh_connection]
-            [persistent_connection]
-            [sudo_become_plugin]
-            [selinux]
-            [colors]
-            [diff]" > ansible.cfg
+
             
 
       - name: Verificar código
@@ -129,9 +113,28 @@ jobs:
           ECR_REGISTRY: ${{ secrets.AWS_URL }}
           ECR_REPOSITORY: ${{ secrets.AWS_IMAGE }}
         run: |
+          sleep 10
           docker build -t $ECR_REPOSITORY .
           docker tag $ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:latest
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+
+      - name: Criação de arquivo hosts
+        run: |
+          echo "[ec2]"$'\n'"authsure ansible_host=${{ env.HOST }} ansible_user=ubuntu ansible_ssh_private_key_file=${{ github.workspace }}/.ssh/key" > .hosts
+          cat .hosts
+          echo "[defaults]
+            transport = ssh
+            host_key_checking = False
+            private_key_file = ~/.ssh/key
+            [inventory]
+            [privilege_escalation]
+            [paramiko_connection]
+            [ssh_connection]
+            [persistent_connection]
+            [sudo_become_plugin]
+            [selinux]
+            [colors]
+            [diff]" > ansible.cfg
 
       - name: Run ansible playbook
         run: |
