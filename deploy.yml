@@ -42,7 +42,6 @@
     
     - name: Configure AWS.
       shell: "aws configure set {{ item.key }} {{ item.value }} --profile {{ aws_profile }}"
-      no_log: True
       with_dict:
         aws_access_key_id: "{{ lookup('env', 'AWS_ACCESS_KEY') }}"
         aws_secret_access_key: "{{ lookup('env', 'AWS_SECRET_KEY') }}"
