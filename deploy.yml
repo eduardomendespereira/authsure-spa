@@ -13,14 +13,14 @@
     - name: Adicionar chave de host ao known_hosts
       command: ssh-keyscan -H "{{ ansible_host }}" >> ~/.ssh/known_hosts
 
-    - name: Login no Amazon ECR
-      shell: "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 455968579615.dkr.ecr.us-east-1.amazonaws.com"
-      become: yes
-
     - name: Instalar Docker
       shell: "curl -fsSL https://get.docker.com | sh"
       become: yes
       become_user: ubuntu
+
+    - name: Login no Amazon ECR
+      shell: "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 455968579615.dkr.ecr.us-east-1.amazonaws.com"
+      become: yes
 
     - name: Pull da imagem
       vars:
