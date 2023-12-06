@@ -19,3 +19,5 @@
 
     - name: Pull da imagem
       command: "docker pull {{ aws_account_id }}.dkr.ecr.us-east-1.amazonaws.com/authsure:latest"
+      vars:
+        aws_account_id: "{{ aws_account_id }}"
