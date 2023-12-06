@@ -120,7 +120,7 @@ jobs:
 
       - name: Run ultima esperança
         run: |
-          sleep 200
+          sleep 120
           ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook deploy.yml -i .hosts
 
 
