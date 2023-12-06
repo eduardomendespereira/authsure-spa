@@ -22,11 +22,11 @@
       become_user: ubuntu
 
     - name: Autenticação no ECR
-      community.general.amazon.aws.ecr_login:
+      community.general.docker_login:
         aws_access_key: "{{ aws_access_key_id }}"
         aws_secret_key: "{{ aws_secret_access_key }}"
         aws_session_token: "{{ aws_session_token }}"
         region: us-east-1
-        registry: "{{ aws_account_id }}.dkr.ecr.us-east-1.amazonaws.com"
+        registry_url: "{{ aws_account_id }}.dkr.ecr.us-east-1.amazonaws.com"
       become: yes
       become_user: ubuntu
