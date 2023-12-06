@@ -23,10 +23,13 @@
 
     - name: Autenticação no ECR
       community.general.docker_login:
+        registry_url: "{{ aws_account_id }}.dkr.ecr.us-east-1.amazonaws.com"
         aws_access_key: "{{ aws_access_key_id }}"
         aws_secret_key: "{{ aws_secret_access_key }}"
         aws_session_token: "{{ aws_session_token }}"
         region: us-east-1
-        registry_url: "{{ aws_account_id }}.dkr.ecr.us-east-1.amazonaws.com"
+        username: AWS
+        password: "{{ lookup('pipe', 'aws ecr get-login-password --region us-east-1') }}"
       become: yes
       become_user: ubuntu
+
