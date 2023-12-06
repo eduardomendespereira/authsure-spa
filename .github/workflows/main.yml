@@ -105,7 +105,7 @@ jobs:
             [ec2] 
             ${{ env.HOST }} ansible_ssh_user=ubuntu # the ansible inventory to use, stored as "ansible_inventory" in the GitHub secrets
           known_hosts: |
-            ${{ env.HOST }} ~/.ssh/key.pub
+            ${{ env.HOST }} $(cat ~/.ssh/key.pub)
 
       # - name: Criação de arquivo hosts
       #   run: |
