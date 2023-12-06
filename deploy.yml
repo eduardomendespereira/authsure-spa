@@ -33,6 +33,12 @@
         src: /tmp/awscliv2.zip
         dest: /tmp/
         remote_src: yes
+
+    - name: awscli-bundle
+      shell: ./aws/install -i /usr/local/aws-cli -b /usr/local/bin
+      args: 
+       chdir: /tmp/
+      tags: Installed_awscli-bundle
     
     # - name: Configure AWS.
     #   shell: "aws configure set {{ item.key }} {{ item.value }} --profile {{ aws_profile }}"
