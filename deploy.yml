@@ -18,6 +18,12 @@
       become: yes
       become_user: ubuntu
 
+    - name: Instalar AWS CLI no Ubuntu
+      become: yes
+      apt:
+        name: awscli
+        state: present
+
     - name: Login no Amazon ECR
       shell: "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 455968579615.dkr.ecr.us-east-1.amazonaws.com"
       become: yes
