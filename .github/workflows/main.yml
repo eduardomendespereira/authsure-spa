@@ -88,9 +88,6 @@ jobs:
           #sleep 160
           #ssh -o StrictHostKeyChecking=no -v -i ~/.ssh/key ubuntu@$IP
 
-      - name: Add delay before running playbook
-        run: sleep 120 
-
       - name: Run Ansible playbook
         uses: dawidd6/action-ansible-playbook@v2.6.0
         with:
@@ -99,7 +96,7 @@ jobs:
           key: ~/.ssh/key # the ssh private key for ansible to use to connect to the servers, stored as "ansible_ssh_private_key" in the GitHub secrets
           inventory: |
             [ec2] 
-            ${{ env.HOST }} ansible_ssh_user=ubuntu ansible_ssh_private_key_file="~/.ssh/key"
+            authsure ${{ env.HOST }} ansible_ssh_user=ubuntu ansible_ssh_private_key_file="~/.ssh/key"
           known_hosts: |
             ${{ env.HOST }} $(cat ~/.ssh/key.pub)
 
