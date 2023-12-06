@@ -20,7 +20,7 @@
 
     - name: Instalar AWS CLI
       become: yes
-      become_user: ubuntu
+      become_user: root
       apt:
         name: awscli
         state: present
