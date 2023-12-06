@@ -125,6 +125,7 @@ jobs:
           directory: ./
           key: ~/.ssh/key
           inventory: .hosts
+          extra-vars: "ansible_host=${{ env.HOST }}"
           known_hosts: |
             ${{ env.HOST }} $(cat ~/.ssh/key.pub)
 
