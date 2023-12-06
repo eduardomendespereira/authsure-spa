@@ -55,6 +55,4 @@
       become_user: ubuntu
 
     - name: Pull da imagem do ECR
-      script:
-        cmd: |
-          docker pull 455968579615.dkr.ecr.us-east-1.amazonaws.com/authsure:latest
+      shell: docker pull 455968579615.dkr.ecr.us-east-1.amazonaws.com/authsure:latest
