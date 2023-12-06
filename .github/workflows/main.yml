@@ -131,8 +131,10 @@ jobs:
       - name: Run playbook
         run: |
           cat ansible.cfg
-          sleep 60
-          ansible-playbook -i .hosts --user=ubuntu --private-key=~/.ssh/key -c ansible.cfg --ssh-extra-args="-o StrictHostKeyChecking=no" deploy.yml
+          sleep 10
+          ansible-playbook -i .hosts --user=ubuntu --private-key=~/.ssh/key --ssh-extra-args="-o StrictHostKeyChecking=no" deploy.yml
+        env:
+          ANSIBLE_CONFIG: ansible.cfg
 
       # - name: Run playbook
       #   id: ansible
