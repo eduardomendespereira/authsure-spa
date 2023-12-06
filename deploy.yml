@@ -46,7 +46,7 @@
         aws_access_key_id: "{{ lookup('env', 'AWS_ACCESS_KEY') }}"
         aws_secret_access_key: "{{ lookup('env', 'AWS_SECRET_KEY') }}"
         region: "us-east-1"
-      become_user: "{{ aws_system_user }}"
+      become: true
       changed_when: false
 
     - name: Instalar Docker
