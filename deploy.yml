@@ -1,6 +1,11 @@
 ---
 - name: Instalação do Docker
   hosts: ec2
+  module_defaults:
+    group/aws:
+      aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY') }}"
+      aws_secret_key: "{{ lookup('env', 'AWS_SECRET_KEY') }}"
+      region: "us-east-1"
   gather_facts: true
   any_errors_fatal: true
   become: yes
@@ -14,13 +19,6 @@
 
     - name: Instalar Docker
       shell: "curl -fsSL https://get.docker.com | sh"
-      become: yes
-      become_user: ubuntu
-
-    - name: Autenticar no Amazon ECR
-      community.aws.ecr_login:
-        region: "us-east-1"
-        aws_account_id: 455968579615
       become: yes
       become_user: ubuntu
 
