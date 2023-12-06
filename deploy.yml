@@ -34,5 +34,5 @@
         AWS_REGION: "us-east-1"
       script:
         cmd: |
-          /usr/bin/aws ecr get-login --no-include-email --region us-east-1 | sh -
+          aws ecr get-login --no-include-email --region us-east-1 | sh -
           docker pull 455968579615.dkr.ecr.us-east-1.amazonaws.com/authsure:latest
