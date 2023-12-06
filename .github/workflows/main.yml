@@ -6,7 +6,7 @@ on:
 
 jobs: 
  
-  # build:
+  # build: 
   #   name: Instalar dependencias e Construir 
   #   runs-on: ubuntu-latest 
  
