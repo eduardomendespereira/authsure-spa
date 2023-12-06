@@ -106,34 +106,35 @@ jobs:
             [selinux]
             [colors]
             [diff]" > ansible.cfg
+            
 
+      - name: Verificar código
+        uses: actions/checkout@v2
+  
+      - name: Configurar credenciais da AWS
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+          aws-session-token: ${{ secrets.AWS_TOKEN }}
+  
+      - name: Fazer login no Amazon ECR
+        id: login-ecr
+        run: |
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.AWS_URL }}
+  
+      - name: Construir, adicionar tag e enviar imagem para o Amazon ECR
+        env:
+          ECR_REGISTRY: ${{ secrets.AWS_URL }}
+          ECR_REPOSITORY: ${{ secrets.AWS_IMAGE }}
+        run: |
+          sleep 15
+          docker build -t $ECR_REPOSITORY .
+          docker tag $ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
       - name: Run ansible playbook
         run: |
           sleep 30
           ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook deploy.yml -i .hosts --extra-vars "aws_account_id=$secrets.AWS_ACCOUNT_ID"
-
-      # - name: Verificar código
-      #   uses: actions/checkout@v2
-  
-      # - name: Configurar credenciais da AWS
-      #   uses: aws-actions/configure-aws-credentials@v1
-      #   with:
-      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      #     aws-region: us-east-1
-      #     aws-session-token: ${{ secrets.AWS_TOKEN }}
-  
-      # - name: Fazer login no Amazon ECR
-      #   id: login-ecr
-      #   run: |
-      #     aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.AWS_URL }}
-  
-      # - name: Construir, adicionar tag e enviar imagem para o Amazon ECR
-      #   env:
-      #     ECR_REGISTRY: ${{ secrets.AWS_URL }}
-      #     ECR_REPOSITORY: ${{ secrets.AWS_IMAGE }}
-      #   run: |
-      #     docker build -t $ECR_REPOSITORY .
-      #     docker tag $ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:latest
-      #     docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
