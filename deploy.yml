@@ -34,8 +34,7 @@
 
     - name: Configurar Credenciais AWS
       become: yes
-      command: "aws configure set aws_access_key_id={{ aws_access_key }} aws_secret_access_key={{ aws_secret_key }} region=us-east-1"
-
+      command: "export AWS_ACCESS_KEY_ID={{ aws_access_key }} && export AWS_SECRET_ACCESS_KEY={{ aws_secret_key }} && export AWS_DEFAULT_REGION={{ aws_default_region }}"
     - name: Login no Amazon ECR
       shell: "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 455968579615.dkr.ecr.us-east-1.amazonaws.com"
       become: yes
