@@ -6,10 +6,15 @@
   become: yes
 
   tasks:
+    - name: Adicionar chave de host ao known_hosts
+      command: ssh-keyscan -H "authsure" >> ~/.ssh/known_hosts
+      delegate_to: localhost
+
     - name: Instalar Docker
       apt:
         name: docker.io
         state: present
       become_user: ubuntu
+
   vars:
-      ansible_ssh_private_key_file: "~/.ssh/key "
+    ansible_ssh_private_key_file: "~/.ssh/key"
