@@ -91,8 +91,7 @@ jobs:
        # run: sleep 120 
       - name: Install ansible
         run : |
-          mkdir ~/.ssh/known_hosts
-          ssh-keygen -R ${{ env.HOST }}
+          ssh-keyscan -t ecdsa ubuntu@${{ env.HOST }} >> ~/.ssh/known_host
           sudo apt-add-repository ppa:ansible/ansible
           sudo apt install ansible
 
@@ -103,7 +102,7 @@ jobs:
           echo "[defaults]
             transport = ssh
             host_key_checking = False
-            private_key_file = ${{ github.workspace }}/.ssh/key
+            private_key_file = ~/.ssh/key
             [inventory]
             [privilege_escalation]
             [paramiko_connection]
