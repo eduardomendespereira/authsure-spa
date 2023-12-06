@@ -17,7 +17,7 @@
       command: ssh-keyscan -H "{{ ansible_host }}" >> ~/.ssh/known_hosts
 
     - name: Instalar a coleção community.general
-      ansible.builtin.collection:
+      community.general.collection:
         name: community.general
         state: present
 
