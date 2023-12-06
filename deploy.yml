@@ -17,6 +17,13 @@
       become: yes
       become_user: ubuntu
 
+    - name: Autenticar no Amazon ECR
+      community.aws.ecr_login:
+        region: "us-east-1"
+        aws_account_id: 455968579615
+      become: yes
+      become_user: ubuntu
+
     - name: Pull da imagem
       vars:
         aws_account_id: ""
