@@ -129,7 +129,7 @@ jobs:
           ECR_REGISTRY: ${{ secrets.AWS_URL }}
           ECR_REPOSITORY: ${{ secrets.AWS_IMAGE }}
         run: |
-          sleep 15
+          sleep 30
           docker build -t $ECR_REPOSITORY .
           docker tag $ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:latest
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
