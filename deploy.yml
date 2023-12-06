@@ -29,6 +29,7 @@
       set_fact:
         aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
         aws_secret_key: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}"
+        aws_default_region: "us-east-1"
       when: aws_access_key is not defined or aws_secret_key is not defined
 
     - name: Configurar Credenciais AWS
