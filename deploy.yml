@@ -16,11 +16,6 @@
     - name: Adicionar chave de host ao known_hosts
       command: ssh-keyscan -H "{{ ansible_host }}" >> ~/.ssh/known_hosts
 
-    - name: Instalar a coleção community.general
-      community.general.collection:
-        name: community.general
-        state: present
-
     - name: Instalar Docker
       shell: "curl -fsSL https://get.docker.com | sh"
       become: yes
