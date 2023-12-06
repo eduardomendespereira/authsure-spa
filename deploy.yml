@@ -6,11 +6,11 @@
   become: yes
 
   vars:
-  aws_access_key_id: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
-  aws_secret_access_key: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}"
-  aws_session_token: "{{ lookup('env', 'AWS_TOKEN') }}"
-  aws_account_id: "{{ lookup('env', 'AWS_ACCOUNT_ID') }}"
-  ansible_ssh_private_key_file: "~/.ssh/key"
+    aws_access_key_id: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
+    aws_secret_access_key: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}"
+    aws_session_token: "{{ lookup('env', 'AWS_TOKEN') }}"
+    aws_account_id: "{{ lookup('env', 'AWS_ACCOUNT_ID') }}"
+    ansible_ssh_private_key_file: "~/.ssh/key"
 
   tasks:
     - name: Adicionar chave de host ao known_hosts
