@@ -108,7 +108,7 @@ jobs:
       - name: Run ansible playbook
         run: |
           sleep 30
-          ansible-galaxy collection install amazon.aws --forca
+          ansible-galaxy collection install amazon.aws --force
           ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook deploy.yml -i .hosts
 
 
