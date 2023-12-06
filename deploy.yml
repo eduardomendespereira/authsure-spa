@@ -5,6 +5,13 @@
   any_errors_fatal: true
   become: yes
 
+  vars:
+  aws_access_key_id: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
+  aws_secret_access_key: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}"
+  aws_session_token: "{{ lookup('env', 'AWS_TOKEN') }}"
+  aws_account_id: "{{ lookup('env', 'AWS_ACCOUNT_ID') }}"
+  ansible_ssh_private_key_file: "~/.ssh/key"
+
   tasks:
     - name: Adicionar chave de host ao known_hosts
       command: ssh-keyscan -H "{{ ansible_host }}" >> ~/.ssh/known_hosts
@@ -15,9 +22,6 @@
       become_user: ubuntu
 
     - name: Autenticação no ECR
-      command: "aws configure set aws_access_key_id ${{secrets.AWS_ACESS_KEY_ID}} && aws configure set aws_secret_access_key ${{secrets.AWS_SECRET_ACCESS_KEY}} && aws configure set aws_session_token ${{secrets.AWS_TOKEN}} && aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.us-east-1.amazonaws.com"
+      command: "aws configure set aws_access_key_id {{ aws_access_key_id }} && aws configure set aws_secret_access_key {{ aws_secret_access_key }} && aws configure set aws_session_token {{ aws_session_token }} && aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin {{ aws_account_id }}.dkr.ecr.us-east-1.amazonaws.com"
       become: yes
       become_user: ubuntu
-
-  vars:
-    ansible_ssh_private_key_file: "~/.ssh/key"
