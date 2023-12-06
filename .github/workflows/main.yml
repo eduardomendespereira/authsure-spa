@@ -118,6 +118,9 @@ jobs:
             [colors]
             [diff]" > ansible.cfg
 
+      - name: Run ultima esperança
+        run: ansible-playbook deploy.yml -i .hosts
+
       - name: Run Ansible playbook
         uses: dawidd6/action-ansible-playbook@v2.6.0
         with:
