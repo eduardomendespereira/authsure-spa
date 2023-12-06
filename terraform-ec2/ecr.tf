@@ -1,4 +1,4 @@
-resource "aws_ecr_repository" "foo" {
+resource "aws_ecrpublic_repository" "foo" {
   name                 = "authsure"
   image_tag_mutability = "MUTABLE"
 
