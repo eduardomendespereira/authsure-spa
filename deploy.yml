@@ -24,6 +24,17 @@
         name: awscli
         state: present
 
+    - name: Configurar Credenciais AWS
+      become: yes
+      set_fact:
+        aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
+        aws_secret_key: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}"
+      when: aws_access_key is not defined or aws_secret_key is not defined
+
+    - name: Configurar Credenciais AWS
+      become: yes
+      command: "aws configure set aws_access_key_id={{ aws_access_key }} aws_secret_access_key={{ aws_secret_key }} region=us-east-1"
+
     - name: Login no Amazon ECR
       shell: "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 455968579615.dkr.ecr.us-east-1.amazonaws.com"
       become: yes
