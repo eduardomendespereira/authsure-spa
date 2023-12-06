@@ -85,20 +85,6 @@ jobs:
           chmod 600 ~/.ssh/key
           chmod 600 ~/.ssh/key.pub
           cat ~/.ssh/key
-          #sleep 160
-          #ssh -o StrictHostKeyChecking=no -v -i ~/.ssh/key ubuntu@$IP
-
-      # - name: Run Ansible playbook
-      #   uses: dawidd6/action-ansible-playbook@v2.6.0
-      #   with:
-      #     playbook: deploy.yml # path to your Ansible playbook
-      #     directory: ./
-      #     key: ~/.ssh/key # the ssh private key for ansible to use to connect to the servers, stored as "ansible_ssh_private_key" in the GitHub secrets
-      #     inventory: |
-      #       [ec2] 
-      #       authsure ${{ env.HOST }} ansible_ssh_user=ubuntu ansible_ssh_private_key_file="~/.ssh/key"
-      #     known_hosts: |
-      #       ${{ env.HOST }} $(cat ~/.ssh/key.pub)
 
       - name: Criação de arquivo hosts
         run: |
@@ -119,50 +105,10 @@ jobs:
             [diff]" > ansible.cfg
 
 
-      - name: Run ultima esperança
+      - name: Run ansible playbook
         run: |
           sleep 30
           ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook deploy.yml -i .hosts
-
-      # - name: Run Ansible playbook
-      #   uses: dawidd6/action-ansible-playbook@v2.6.0
-      #   with:
-      #     playbook: deploy.yml
-      #     directory: ./
-      #     key: ~/.ssh/key
-      #     inventory: .hosts
-      #     extra-vars: "ansible_host=${{ env.HOST }}"
-      #     known_hosts: |
-      #       ${{ env.HOST }} $(cat ~/.ssh/key.pub)
-         
-      # - name: Adicionar host ao known_hosts
-      #   run: |
-      #     chmod 700 ~/.ssh
-      #     chmod 644 ~/.ssh/known_hosts
-      #     ssh-keyscan -H ${{ env.HOST }} >> ~/.ssh/known_hosts
-
-      # - name: Run playbook
-      #   run: |
-      #     cat ansible.cfg
-      #     sleep 10
-      #     ANSIBLE_CONFIG=ansible.cfg ansible-playbook -i .hosts --user=ubuntu --private-key=~/.ssh/key --ssh-extra-args="-o StrictHostKeyChecking=no" deploy.yml
-      #   env:
-      #     ANSIBLE_CONFIG: ansible.cfg
-
-      # - name: Run playbook
-      #   id: ansible
-      #   uses: dawidd6/action-ansible-playbook@v2
-      #   with:
-      #     playbook: deploy.yml
-      #     key: ~/.ssh/key
-      #     inventory: |
-      #       [ec2]
-      #       authsure ansible_host=${{ env.HOST }} ansible_user=ubuntu ansible_ssh_private_key_file="~/.ssh/key"
-      #     options: |
-      #       --inventory .hosts
-      #       --extra-vars hello=there
-      #       --verbose
-
 
 
   #   name: Construir Imagem e Enviar para o Amazon ECR
