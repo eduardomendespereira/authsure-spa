@@ -6,10 +6,6 @@
   become: yes
 
   vars:
-    aws_access_key_id: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
-    aws_secret_access_key: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}"
-    aws_session_token: "{{ lookup('env', 'AWS_TOKEN') }}"
-    aws_account_id: "{{ lookup('env', 'AWS_ACCOUNT_ID') }}"
     ansible_ssh_private_key_file: "~/.ssh/key"
 
   tasks:
@@ -21,15 +17,5 @@
       become: yes
       become_user: ubuntu
 
-    - name: Autenticação no ECR
-      community.general.docker_login:
-        registry_url: "{{ aws_account_id }}.dkr.ecr.us-east-1.amazonaws.com"
-        aws_access_key: "{{ aws_access_key_id }}"
-        aws_secret_key: "{{ aws_secret_access_key }}"
-        aws_session_token: "{{ aws_session_token }}"
-        region: us-east-1
-        username: AWS
-        password: "{{ lookup('pipe', 'aws ecr get-login-password --region us-east-1') }}"
-      become: yes
-      become_user: ubuntu
-
+    - name: Pull da imagem
+      command: "docker pull {{ aws_account_id }}.dkr.ecr.us-east-1.amazonaws.com/amazonlinux:latest"
