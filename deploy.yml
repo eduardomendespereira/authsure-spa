@@ -21,13 +21,6 @@
       become: yes
       become_user: ubuntu
 
-    - name: Instalar boto3
-      become: yes
-      become_user: root
-      pip:
-        name: boto3
-        state: present
-
     - name: Autenticação no ECR
       amazon.aws.ecr_login:
         aws_access_key: "{{ aws_access_key_id }}"
