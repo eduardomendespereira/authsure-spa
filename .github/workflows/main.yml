@@ -108,7 +108,7 @@ jobs:
       - name: Run ansible playbook
         run: |
           sleep 30
-          ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook deploy.yml -i .hosts
+          ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook deploy.yml -i .hosts --extra-vars "aws_account_id=$secrets.AWS_ACCOUNT_ID"
 
       # - name: Verificar código
       #   uses: actions/checkout@v2
