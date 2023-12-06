@@ -1,6 +1,6 @@
 ---
 - name: Instalação do Docker
-  hosts: authsure
+  hosts: ec2
   gather_facts: true
   any_errors_fatal: true
   become: yes
