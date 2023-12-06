@@ -83,12 +83,13 @@ jobs:
           fi
 
           chmod 600 ~/.ssh/key
+          chmod 600 ~/.ssh/key.pub
           cat ~/.ssh/key
           #sleep 160
           #ssh -o StrictHostKeyChecking=no -v -i ~/.ssh/key ubuntu@$IP
 
-       #- name: Add delay before running playbook
-       # run: sleep 120 
+      - name: Add delay before running playbook
+        run: sleep 120 
 
       - name: Run Ansible playbook
         uses: dawidd6/action-ansible-playbook@v2.6.0
