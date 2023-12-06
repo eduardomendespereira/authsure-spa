@@ -24,13 +24,15 @@
         name: awscli
         state: present
 
-    - name: Configurar Credenciais AWS
+    - name: Configurar Credenciais AWS (se necessário)
       become: yes
-      set_fact:
-        aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
-        aws_secret_key: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}"
-        aws_default_region: "us-east-1"
       when: aws_access_key is not defined or aws_secret_key is not defined
+      environment:
+        AWS_ACCESS_KEY_ID: "{{ aws_access_key }}"
+        AWS_SECRET_ACCESS_KEY: "{{ aws_secret_key }}"
+        AWS_DEFAULT_REGION: "us-east-1"  # Defina a região desejada
+      command: "aws configure list"  # Use um comando AWS CLI para verificar as configurações
+
 
     - name: Configurar Credenciais AWS
       become: yes
