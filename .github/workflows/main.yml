@@ -94,7 +94,8 @@ jobs:
         run: |
          echo "[ec2]"$'\n'"authsure ansible_host=${{ env.HOST }} ansible_user=ubuntu ansible_ssh_private_key_file="~/.ssh/key"" > .hosts
          cat .hosts
-
+         echo "[defaults]\ntransport = ssh\nhost_key_checking = False\nprivate_key_file = ~/.ssh/key\n\n[inventory]\n\n[privilege_escalation]\n\n[paramiko_connection]\n\n[ssh_connection]\n\n[persistent_connection]\n\n[sudo_become_plugin]\n\n[selinux]\n\n[colors]\n\n[diff]" > ansible.cfg
+         cat /etc/ansible/ansible.cfg
       - name: Adicionar host ao known_hosts
         run: |
           chmod 700 ~/.ssh
@@ -104,7 +105,7 @@ jobs:
       - name: Run playbook
         run: |
           sleep 60
-          ansible-playbook -i .hosts deploy.yml --user=ubuntu --private-key=~/.ssh/key --ssh-extra-args="-o StrictHostKeyChecking=no"
+          ansible-playbook -i .hosts deploy.yml --user=ubuntu --private-key=~/.ssh/key -c ansible.cfg --ssh-extra-args="-o StrictHostKeyChecking=no"
 
       # - name: Run playbook
       #   id: ansible
