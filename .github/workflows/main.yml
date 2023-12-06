@@ -84,8 +84,8 @@ jobs:
 
           chmod 600 ~/.ssh/key
           cat ~/.ssh/key
-          sleep 160
-          ssh -o StrictHostKeyChecking=no -v -i ~/.ssh/key ubuntu@$IP
+          #sleep 160
+          #ssh -o StrictHostKeyChecking=no -v -i ~/.ssh/key ubuntu@$IP
 
        #- name: Add delay before running playbook
        # run: sleep 120 
@@ -93,10 +93,11 @@ jobs:
       - name: Criação de arquivo hosts
         run: |
          echo "[ec2]"$'\n'"authsure ansible_host=${{ env.HOST }} ansible_user=ubuntu ansible_ssh_private_key_file="~/.ssh/key"" > .hosts
+         cat .hosts
 
       - name: Run playbook
         run: |
-          ansible-playbook -i ../deploy.yml --user=ubuntu --private-key=~/.ssh/key
+          ansible-playbook -i .hosts ../deploy.yml --user=ubuntu --private-key=~/.ssh/key
 
       # - name: Run playbook
       #   id: ansible
