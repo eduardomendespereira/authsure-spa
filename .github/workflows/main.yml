@@ -88,35 +88,46 @@ jobs:
           #sleep 160
           #ssh -o StrictHostKeyChecking=no -v -i ~/.ssh/key ubuntu@$IP
 
+      # - name: Run Ansible playbook
+      #   uses: dawidd6/action-ansible-playbook@v2.6.0
+      #   with:
+      #     playbook: deploy.yml # path to your Ansible playbook
+      #     directory: ./
+      #     key: ~/.ssh/key # the ssh private key for ansible to use to connect to the servers, stored as "ansible_ssh_private_key" in the GitHub secrets
+      #     inventory: |
+      #       [ec2] 
+      #       authsure ${{ env.HOST }} ansible_ssh_user=ubuntu ansible_ssh_private_key_file="~/.ssh/key"
+      #     known_hosts: |
+      #       ${{ env.HOST }} $(cat ~/.ssh/key.pub)
+
+      - name: Criação de arquivo hosts
+        run: |
+          echo "[ec2]"$'\n'"authsure ansible_host=${{ env.HOST }} ansible_user=ubuntu ansible_ssh_private_key_file=${{ github.workspace }}/.ssh/key" > .hosts
+          cat .hosts
+          echo "[defaults]
+            transport = ssh
+            host_key_checking = False
+            private_key_file = ~/.ssh/key
+            [inventory]
+            [privilege_escalation]
+            [paramiko_connection]
+            [ssh_connection]
+            [persistent_connection]
+            [sudo_become_plugin]
+            [selinux]
+            [colors]
+            [diff]" > ansible.cfg
+
       - name: Run Ansible playbook
         uses: dawidd6/action-ansible-playbook@v2.6.0
         with:
-          playbook: deploy.yml # path to your Ansible playbook
+          playbook: deploy.yml
           directory: ./
-          key: ~/.ssh/key # the ssh private key for ansible to use to connect to the servers, stored as "ansible_ssh_private_key" in the GitHub secrets
-          inventory: |
-            [ec2] 
-            authsure ${{ env.HOST }} ansible_ssh_user=ubuntu ansible_ssh_private_key_file="~/.ssh/key"
+          key: ~/.ssh/key
+          inventory: .hosts
           known_hosts: |
             ${{ env.HOST }} $(cat ~/.ssh/key.pub)
 
-      # - name: Criação de arquivo hosts
-      #   run: |
-      #     echo "[ec2]"$'\n'"authsure ansible_host=${{ env.HOST }} ansible_user=ubuntu ansible_ssh_private_key_file=${{ github.workspace }}/.ssh/key" > .hosts
-      #     cat .hosts
-      #     echo "[defaults]
-      #       transport = ssh
-      #       host_key_checking = False
-      #       private_key_file = ~/.ssh/key
-      #       [inventory]
-      #       [privilege_escalation]
-      #       [paramiko_connection]
-      #       [ssh_connection]
-      #       [persistent_connection]
-      #       [sudo_become_plugin]
-      #       [selinux]
-      #       [colors]
-      #       [diff]" > ansible.cfg
          
       # - name: Adicionar host ao known_hosts
       #   run: |
