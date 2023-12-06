@@ -18,6 +18,15 @@
       become: yes
       become_user: ubuntu
 
+    - name: Instalar AWS CLI
+      become: yes
+      become_user: ubuntu
+      apt:
+        name: awscli
+        state: present
+
+    
+
     - name: Pull da imagem do ECR
       environment:
         AWS_ACCESS_KEY_ID: "{{ lookup('env', 'AWS_ACCESS_KEY') }}"
@@ -25,5 +34,5 @@
         AWS_REGION: "us-east-1"
       script:
         cmd: |
-          aws ecr get-login --no-include-email --region us-east-1 | sh -
+          /usr/bin/aws ecr get-login --no-include-email --region us-east-1 | sh -
           docker pull 455968579615.dkr.ecr.us-east-1.amazonaws.com/authsure:latest
