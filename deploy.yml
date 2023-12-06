@@ -8,15 +8,6 @@
 
   vars:
     ansible_ssh_private_key_file: "~/.ssh/key"
-    aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY') }}"
-    aws_secret_key: "{{ lookup('env', 'AWS_SECRET_KEY') }}"
-    region: "us-east-1"
-
-  module_defaults:
-  group/aws:
-    aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY') }}"
-    aws_secret_key: "{{ lookup('env', 'AWS_SECRET_KEY') }}"
-    region: "{{ region }}"
       
   tasks:
     - name: Adicionar chave de host ao known_hosts
@@ -27,8 +18,11 @@
       become: yes
       become_user: ubuntu
 
-    - name: Pull da imagem
-      vars:
-        aws_account_id: ""
-      command: "docker pull 455968579615.dkr.ecr.us-east-1.amazonaws.com/authsure:latest"
-
+    - name: Pull da imagem do ECR
+      environment:
+        AWS_ACCESS_KEY_ID: "{{ lookup('env', 'AWS_ACCESS_KEY') }}"
+        AWS_SECRET_ACCESS_KEY: "{{ lookup('env', 'AWS_SECRET_KEY') }}"
+        AWS_REGION: "us-east-1"
+      command: >
+        $(aws ecr get-login --no-include-email --region us-east-1) && 
+        docker pull 455968579615.dkr.ecr.us-east-1.amazonaws.com/authsure:latest
