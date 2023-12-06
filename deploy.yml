@@ -13,26 +13,45 @@
     - name: Adicionar chave de host ao known_hosts
       command: ssh-keyscan -H "{{ ansible_host }}" >> ~/.ssh/known_hosts
 
+
+
+    - name: Install package dependencies.
+      package: name={{ item }} state=present
+      with_items:
+        - python
+        - unzip
+    
+    - name: Download the awscli bundle.
+      get_url: url=https://s3.amazonaws.com/aws-cli/awscli-bundle.zip dest=/tmp/awscli-bundle.zip
+      register: aws_cli_download_bundle
+    
+    - name: Unarchive the installer.
+      unarchive: src=/tmp/awscli-bundle.zip dest=/tmp copy=no creates=/tmp/awscli-bundle
+      when: aws_cli_download_bundle.changed
+      register: aws_cli_unarchive_installer
+    
+    - name: Install awscli package.
+      shell: python /tmp/awscli-bundle/install -i /usr/local/aws -b /usr/bin/aws
+      args:
+        creates: /usr/bin/aws
+      when: aws_cli_unarchive_installer.changed
+    
+    - name: Configure AWS.
+      shell: aws configure set {{ item.key }} {{ item.value }} --profile {{ aws_profile }}
+      no_log: True
+      with_dict:
+        aws_access_key_id: "{{ lookup('env', 'AWS_ACCESS_KEY') }}"
+        aws_secret_access_key: "{{ lookup('env', 'AWS_SECRET_KEY') }}"
+        region: "us-east-1"
+      become_user: "{{ aws_system_user }}"
+      changed_when: false
+
     - name: Instalar Docker
       shell: "curl -fsSL https://get.docker.com | sh"
       become: yes
       become_user: ubuntu
 
-    - name: Instalar AWS CLI
-      become: yes
-      become_user: root
-      apt:
-        name: awscli
-        state: present
-
-    
-
     - name: Pull da imagem do ECR
-      environment:
-        AWS_ACCESS_KEY_ID: "{{ lookup('env', 'AWS_ACCESS_KEY') }}"
-        AWS_SECRET_ACCESS_KEY: "{{ lookup('env', 'AWS_SECRET_KEY') }}"
-        AWS_REGION: "us-east-1"
       script:
         cmd: |
-          aws ecr get-login --no-include-email --region us-east-1 | sh -
           docker pull 455968579615.dkr.ecr.us-east-1.amazonaws.com/authsure:latest
