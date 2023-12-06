@@ -91,6 +91,7 @@ jobs:
        # run: sleep 120 
       - name: Install ansible
         run : |
+          ssh-keygen -R ${{ env.HOST }}
           sudo apt-add-repository ppa:ansible/ansible
           sudo apt install ansible
 
@@ -120,7 +121,6 @@ jobs:
           [colors]
           
           [diff]" > ansible.cfg
-
          
       # - name: Adicionar host ao known_hosts
       #   run: |
