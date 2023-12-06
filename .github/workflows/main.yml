@@ -91,7 +91,7 @@ jobs:
        # run: sleep 120 
       - name: Install ansible
         run : |
-          ssh-keyscan -t ecdsa ${{ env.HOST }} >> ~/.ssh/known_hosts
+          ssh-keyscan -R ecdsa ${{ env.HOST }} >> ~/.ssh/known_hosts
           sudo apt-add-repository ppa:ansible/ansible
           sudo apt install ansible
 
