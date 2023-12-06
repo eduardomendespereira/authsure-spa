@@ -15,7 +15,7 @@
       become_user: ubuntu
 
     - name: Autenticação no ECR
-      command: "aws configure set aws_access_key_id {{ lookup('env', 'AWS_ACCESS_KEY_ID') }} && aws configure set aws_secret_access_key {{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }} && aws configure set aws_session_token {{ lookup('env', 'AWS_TOKEN') }} && aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin {{ lookup('env', 'AWS_ACCOUNT_ID') }}.dkr.ecr.us-east-1.amazonaws.com"
+      command: "aws configure set aws_access_key_id ${{secrets.AWS_ACESS_KEY_ID}} && aws configure set aws_secret_access_key ${{secrets.AWS_SECRET_ACCESS_KEY}} && aws configure set aws_session_token ${{secrets.AWS_TOKEN}} && aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.us-east-1.amazonaws.com"
       become: yes
       become_user: ubuntu
 
