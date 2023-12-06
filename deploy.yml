@@ -17,8 +17,9 @@
       command: ssh-keyscan -H "{{ ansible_host }}" >> ~/.ssh/known_hosts
 
     - name: Instalar a coleção community.general
-      ansible.builtin.community.general.collection_install:
-      name: community.general
+      ansible.builtin.collection:
+        name: community.general
+        state: present
 
     - name: Instalar Docker
       shell: "curl -fsSL https://get.docker.com | sh"
@@ -41,4 +42,3 @@
         registry: "{{ aws_account_id }}.dkr.ecr.us-east-1.amazonaws.com"
       become: yes
       become_user: ubuntu
-
