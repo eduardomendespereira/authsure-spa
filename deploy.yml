@@ -55,6 +55,20 @@
       become: yes
       become_user: ubuntu
 
+    - name: Seed AWS credentials file
+      become: yes
+      become_user: "{{ aws_system_user }}"
+      vars:
+        aws_credentials_file: "~/.aws/credentials"
+        aws_access_key_id: "{{ lookup('env', 'AWS_ACCESS_KEY') }}"
+        aws_secret_access_key: "{{ lookup('env', 'AWS_SECRET_KEY') }}"
+        aws_session_token:  "{{ lookup('env', 'AWS_TOKEN') }}"
+      command: |
+        echo "[default]" >> {{ aws_credentials_file }}
+        echo "aws_access_key_id={{ aws_access_key_id }}" >> {{ aws_credentials_file }}
+        echo "aws_secret_access_key={{ aws_secret_access_key }}" >> {{ aws_credentials_file }}
+        echo "aws_session_token={{ aws_session_token }}" >> {{ aws_credentials_file }}
+
     - name: Login na AWS ECR
       shell: "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 455968579615.dkr.ecr.us-east-1.amazonaws.com"
       become: yes
