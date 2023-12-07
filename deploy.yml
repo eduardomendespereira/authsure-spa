@@ -57,7 +57,6 @@
 
     - name: Seed AWS credentials file
       become: yes
-      become_user: "{{ aws_system_user }}"
       vars:
         aws_credentials_file: "~/.aws/credentials"
         aws_access_key_id: "{{ lookup('env', 'AWS_ACCESS_KEY') }}"
