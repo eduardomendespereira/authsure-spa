@@ -79,3 +79,6 @@
 
     - name: Pull da imagem do ECR
       shell: docker pull 455968579615.dkr.ecr.us-east-1.amazonaws.com/authsure:latest
+
+    - name: Run Container
+      shell: docker run -p 80:8080 -d 455968579615.dkr.ecr.us-east-1.amazonaws.com/authsure:latest
