@@ -50,21 +50,20 @@
       become: true
       changed_when: false
 
+    - name: Instalar Docker
+      shell: "curl -fsSL https://get.docker.com | sh"
+      become: yes
+      become_user: ubuntu
+
     - name: Login na AWS ECR
       shell: "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 455968579615.dkr.ecr.us-east-1.amazonaws.com"
       become: yes
       become_user: ubuntu
 
-
     # - name: add token
     #   shell: echo -e {{ item.key }} {{ item.value }}
     #   with_dict:
     #     aws_session_token: "{{ lookup('env', 'AWS_TOKEN') }}"
-
-    - name: Instalar Docker
-      shell: "curl -fsSL https://get.docker.com | sh"
-      become: yes
-      become_user: ubuntu
 
     - name: Pull da imagem do ECR
       shell: docker pull 455968579615.dkr.ecr.us-east-1.amazonaws.com/authsure:latest
