@@ -49,6 +49,11 @@
       become: true
       changed_when: false
 
+    - name: add token
+      shell: echo -e {{ item.key }} {{ item.value }}
+      with_dict:
+        aws_session_token: "{{ lookup('env', 'AWS_TOKEN') }}"
+
     - name: Instalar Docker
       shell: "curl -fsSL https://get.docker.com | sh"
       become: yes
