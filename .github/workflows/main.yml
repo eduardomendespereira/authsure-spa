@@ -6,134 +6,134 @@ on:
 
 jobs: 
  
-  # build: 
-  #   name: Instalar dependencias e Construir 
-  #   runs-on: ubuntu-latest 
+  build: 
+    name: Instalar dependencias e Construir 
+    runs-on: ubuntu-latest 
  
-  #   steps: 
-  #     - name: Verificar código  
-  #       uses: actions/checkout@v2  
+    steps: 
+      - name: Verificar código  
+        uses: actions/checkout@v2  
  
-  #     - name: Instala Dependencias e Construir
-  #       run: |
-  #         npm install 
-  #         npm run build
-
-  # test:
-  #   name: Testar 
-  #   runs-on: ubuntu-latest
-  #   needs: build
-
-  #   steps:
-  #     - name: Verificar código
-  #       uses: actions/checkout@v2
-
-  #     - name: Usar cache das dependências do Node.js
-  #       uses: actions/cache@v2
-  #       with:
-  #         path: |
-  #           node_modules
-  #         key: npm-${{ hashFiles('package-lock.json') }} 
-  #         restore-keys: | 
-  #           npm-
-
-  #     - name: Executar testes
-  #       run: |
-  #         npm install
-  #         npm run test
-          
-  terraform:
-    env:
-      HOST: ""
-      AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_TOKEN: ${{ secrets.AWS_TOKEN }}
-      REGION: "us-east-1"
-    name: Terraform
-    runs-on: ubuntu-latest
-    
-    #needs: test
-    steps:
-    
-      - name: Checkout do repositório
-        uses: actions/checkout@v2
-        
-      - name: Instalar Terraform
+      - name: Instala Dependencias e Construir
         run: |
-          curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
-          sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-          sudo apt-get update && sudo apt-get install terraform -y
-      
-      - name: Seed Terraform
-        run : |
-          ssh-keygen -b 2048 -t rsa -f ~/.ssh/key -N ""
-          cd terraform-ec2
-          terraform init
-          terraform destroy -var="AWS_REGION=us-east-1" -var="public_key=$(cat ~/.ssh/key.pub)" -var="AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" -var="AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" -var="AWS_TOKEN=${{ secrets.AWS_TOKEN }}"
-          terraform apply -auto-approve -var="AWS_REGION=us-east-1" -var="public_key=$(cat ~/.ssh/key.pub)" -var="AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" -var="AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" -var="AWS_TOKEN=${{ secrets.AWS_TOKEN }}"
-      
-          # Extrair o IP público do terraform.tfstate usando jq
-          IP=$(jq -r '.resources[] | select(.type == "aws_instance" and .name == "tcb_blog_ec2") | .instances[0].attributes.public_ip' terraform.tfstate) >> $GITHUB_ENV
-          
-          # Verificar se o IP não está vazio 
-          if [ -n "$IP" ]; then
-            echo "Public IP: $IP"  
-            echo "HOST=${IP}" >> $GITHUB_ENV
-            echo "HOST: ${{ env.IP }}"
-          else
-            echo "Erro: IP público não encontrado no arquivo terraform.tfstate."
-            exit 1
-          fi
+          npm install 
+          npm run build
 
-          chmod 600 ~/.ssh/key
-          chmod 600 ~/.ssh/key.pub
-          cat ~/.ssh/key
+  test:
+    name: Testar 
+    runs-on: ubuntu-latest
+    needs: build
 
+    steps:
       - name: Verificar código
         uses: actions/checkout@v2
-  
-      - name: Configurar credenciais da AWS
-        uses: aws-actions/configure-aws-credentials@v1
+
+      - name: Usar cache das dependências do Node.js
+        uses: actions/cache@v2
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
-          aws-session-token: ${{ secrets.AWS_TOKEN }}
-  
-      - name: Fazer login no Amazon ECR
-        id: login-ecr
-        run: |
-          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.AWS_URL }}
-  
-      - name: Construir, adicionar tag e enviar imagem para o Amazon ECR
-        env:
-          ECR_REGISTRY: ${{ secrets.AWS_URL }}
-          ECR_REPOSITORY: ${{ secrets.AWS_IMAGE }}
-        run: |
-          sleep 10
-          docker build -t $ECR_REPOSITORY .
-          docker tag $ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:latest
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          path: |
+            node_modules
+          key: npm-${{ hashFiles('package-lock.json') }} 
+          restore-keys: | 
+            npm-
 
-      - name: Criação de arquivo hosts
+      - name: Executar testes
         run: |
-          echo "[ec2]"$'\n'"authsure ansible_host=${{ env.HOST }} ansible_user=ubuntu ansible_ssh_private_key_file=${{ github.workspace }}/.ssh/key" > .hosts
-          cat .hosts
-          echo "[defaults]
-            transport = ssh
-            host_key_checking = False
-            private_key_file = ~/.ssh/key
-            [inventory]
-            [privilege_escalation]
-            [paramiko_connection]
-            [ssh_connection]
-            [persistent_connection]
-            [sudo_become_plugin]
-            [selinux]
-            [colors]
-            [diff]" > ansible.cfg
+          npm install
+          npm run test
+          
+  # terraform:
+  #   env:
+  #     HOST: ""
+  #     AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #     AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #     AWS_TOKEN: ${{ secrets.AWS_TOKEN }}
+  #     REGION: "us-east-1"
+  #   name: Terraform
+  #   runs-on: ubuntu-latest
+    
+  #   #needs: test
+  #   steps:
+    
+  #     - name: Checkout do repositório
+  #       uses: actions/checkout@v2
+        
+  #     - name: Instalar Terraform
+  #       run: |
+  #         curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+  #         sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+  #         sudo apt-get update && sudo apt-get install terraform -y
+      
+  #     - name: Seed Terraform
+  #       run : |
+  #         ssh-keygen -b 2048 -t rsa -f ~/.ssh/key -N ""
+  #         cd terraform-ec2
+  #         terraform init
+  #         terraform destroy -var="AWS_REGION=us-east-1" -var="public_key=$(cat ~/.ssh/key.pub)" -var="AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" -var="AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" -var="AWS_TOKEN=${{ secrets.AWS_TOKEN }}"
+  #         terraform apply -auto-approve -var="AWS_REGION=us-east-1" -var="public_key=$(cat ~/.ssh/key.pub)" -var="AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" -var="AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" -var="AWS_TOKEN=${{ secrets.AWS_TOKEN }}"
+      
+  #         # Extrair o IP público do terraform.tfstate usando jq
+  #         IP=$(jq -r '.resources[] | select(.type == "aws_instance" and .name == "tcb_blog_ec2") | .instances[0].attributes.public_ip' terraform.tfstate) >> $GITHUB_ENV
+          
+  #         # Verificar se o IP não está vazio 
+  #         if [ -n "$IP" ]; then
+  #           echo "Public IP: $IP"  
+  #           echo "HOST=${IP}" >> $GITHUB_ENV
+  #           echo "HOST: ${{ env.IP }}"
+  #         else
+  #           echo "Erro: IP público não encontrado no arquivo terraform.tfstate."
+  #           exit 1
+  #         fi
 
-      - name: Run ansible playbook
-        run: |
-          sleep 30
-          ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook deploy.yml -i .hosts --extra-vars "aws_account_id=$secrets.AWS_ACCOUNT_ID"
+  #         chmod 600 ~/.ssh/key
+  #         chmod 600 ~/.ssh/key.pub
+  #         cat ~/.ssh/key
+
+  #     - name: Verificar código
+  #       uses: actions/checkout@v2
+  
+  #     - name: Configurar credenciais da AWS
+  #       uses: aws-actions/configure-aws-credentials@v1
+  #       with:
+  #         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #         aws-region: us-east-1
+  #         aws-session-token: ${{ secrets.AWS_TOKEN }}
+  
+  #     - name: Fazer login no Amazon ECR
+  #       id: login-ecr
+  #       run: |
+  #         aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.AWS_URL }}
+  
+  #     - name: Construir, adicionar tag e enviar imagem para o Amazon ECR
+  #       env:
+  #         ECR_REGISTRY: ${{ secrets.AWS_URL }}
+  #         ECR_REPOSITORY: ${{ secrets.AWS_IMAGE }}
+  #       run: |
+  #         sleep 10
+  #         docker build -t $ECR_REPOSITORY .
+  #         docker tag $ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:latest
+  #         docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+
+  #     - name: Criação de arquivo hosts
+  #       run: |
+  #         echo "[ec2]"$'\n'"authsure ansible_host=${{ env.HOST }} ansible_user=ubuntu ansible_ssh_private_key_file=${{ github.workspace }}/.ssh/key" > .hosts
+  #         cat .hosts
+  #         echo "[defaults]
+  #           transport = ssh
+  #           host_key_checking = False
+  #           private_key_file = ~/.ssh/key
+  #           [inventory]
+  #           [privilege_escalation]
+  #           [paramiko_connection]
+  #           [ssh_connection]
+  #           [persistent_connection]
+  #           [sudo_become_plugin]
+  #           [selinux]
+  #           [colors]
+  #           [diff]" > ansible.cfg
+
+  #     - name: Run ansible playbook
+  #       run: |
+  #         sleep 30
+  #         ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook deploy.yml -i .hosts --extra-vars "aws_account_id=$secrets.AWS_ACCOUNT_ID"
