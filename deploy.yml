@@ -46,13 +46,21 @@
         aws_access_key_id: "{{ lookup('env', 'AWS_ACCESS_KEY') }}"
         aws_secret_access_key: "{{ lookup('env', 'AWS_SECRET_KEY') }}"
         region: "us-east-1"
+        aws_session_token: "{{ lookup('env', 'AWS_TOKEN') }}"
       become: true
       changed_when: false
 
-    - name: add token
-      shell: echo -e {{ item.key }} {{ item.value }}
-      with_dict:
-        aws_session_token: "{{ lookup('env', 'AWS_TOKEN') }}"
+    - name: Login na AWS ECR
+      shell: $(aws ecr get-login --no-include-email --region us-east-1)
+      args:
+        executable: /bin/bash
+      become: yes
+      become_user: ubuntu
+
+    # - name: add token
+    #   shell: echo -e {{ item.key }} {{ item.value }}
+    #   with_dict:
+    #     aws_session_token: "{{ lookup('env', 'AWS_TOKEN') }}"
 
     - name: Instalar Docker
       shell: "curl -fsSL https://get.docker.com | sh"
